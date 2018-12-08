@@ -1,0 +1,11 @@
+FROM influx6/actorkit-base:1.0
+MAINTAINER Alexander Ewetumo <trinoxf@gmail.com>
+
+RUN mkdir /scripts
+ADD nats-setup.sh /scripts/nats-streaming-setup.sh
+ADD gnats.conf /scripts/gnats.conf
+
+# Expose client, management, and cluster ports
+EXPOSE 4222 8222 6222
+
+RUN /scripts/nats-streaming-setup.sh
