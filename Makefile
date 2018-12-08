@@ -36,9 +36,10 @@ tags:
 	docker tag nats-streaming-base $(DUSER)/nats-streaming-base:$(VERSION)
 	docker tag kafka-base $(DUSER)/kafka-base:$(VERSION)
 	docker tag redis-base $(DUSER)/redis-base:$(VERSION)
+	$(foreach component, $(COMPONENTS), docker tag google-$(component)-base $(DUSER)/google-$(component)-base:$(VERSION);)
 
 build-components:
-	$(foreach component, $(COMPONENTS), docker build --build-arg component=$(component) -t google-$(component)-base -f Dockerfile-google-components .; docker tag google-$(component)-base $(DUSER)/google-$(component)-base:$(VERSION);)
+	$(foreach component, $(COMPONENTS), docker build --build-arg component=$(component) -t google-$(component)-base -f Dockerfile-google-components .;)
 
 push:
 	docker push $(DUSER)/alpine-base:$(VERSION)
