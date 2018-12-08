@@ -1,7 +1,7 @@
 VERSION ?= 0.1
 DUSER ?= influx6
-COMPONENTS = app-engine-go cbt bigtable datalab cloud-datastore-emulator gcd-emulator cloud-firestore-emulator pubsub-emulator cloud_sql_proxy emulator-reverse-proxy cloud-build-local docker-credential-gcr kubectl
-GOVERSION = 1.11.2 1.11.1 1.11 1.10 1.9 1.8 1.7
+COMPONENTS ?= app-engine-go cbt bigtable datalab cloud-datastore-emulator gcd-emulator cloud-firestore-emulator pubsub-emulator cloud_sql_proxy emulator-reverse-proxy cloud-build-local docker-credential-gcr kubectl
+GOVERSION ?= 1.11.2 1.11.1 1.11 1.10 1.9 1.8 1.7
 FROM_NAME='#FROM'
 
 define COMPONENT_DOCKER_FORMAT
