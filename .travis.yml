@@ -37,10 +37,10 @@ script:
 
 jobs:
   include:
-  stage: go1.11.2-builds
-  script: GOVERSION=1.11.2 make default
-  stage: go1.11.1-builds
-  script: GOVERSION=1.11.1 make default
+  - stage: go1.11.2-builds
+    script: GOVERSION=1.11.2 make default
+  - stage: go1.11.1-builds
+    script: GOVERSION=1.11.1 make default
 
 # don't notify me when things fail
 notifications:
