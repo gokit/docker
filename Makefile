@@ -24,7 +24,7 @@ build-pubsub:
 	docker build -t nats-base -f Dockerfile-nats .
 	docker build -t kafka-base -f Dockerfile-kafka .
 	docker build -t redis-base -f Dockerfile-redis .
-	docker build -t google-cloud-base -f Dockerfile-gcloud .
+	docker build -t google-gcloud-base -f Dockerfile-gcloud .
 	docker build -t nats-streaming-base -f Dockerfile-nats-streaming .
 
 build-golang:
@@ -58,7 +58,7 @@ tags:
 	docker tag nats-base $(DUSER)/nats-base:$(VERSION)
 	docker tag kafka-base $(DUSER)/kafka-base:$(VERSION)
 	docker tag redis-base $(DUSER)/redis-base:$(VERSION)
-	docker tag google-gcloud-base $(DUSER)/google-cloud-base:$(VERSION)
+	docker tag google-gcloud-base $(DUSER)/google-gcloud-base:$(VERSION)
 	docker tag nats-streaming-base $(DUSER)/nats-streaming-base:$(VERSION)
 	$(foreach version, $(GOVERSION), docker tag golang-$(version)-base $(DUSER)/golang-$(version)-base:$(VERSION);)
 
