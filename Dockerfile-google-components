@@ -6,4 +6,3 @@ RUN set -xe && \
 	gcloud components install $component && \
 	gcloud components update
 
-VOLUME ["/root/.config"]
