@@ -14,7 +14,7 @@ build: build-bases tags build-google-components build-gcloud-golang tags-version
 
 build-bases: build-base build-pubsub build-golang
 
-build-components: tags-pubsub build-kafka-golang build-nats-golang build-nats-streaming-golang build-redis-golang build-golang-components tags-components
+build-components:  build-kafka-golang build-nats-golang build-nats-streaming-golang build-redis-golang tags-pubsub-components build-golang-components tags-golang-components
 
 build-base:
 	docker build -t alpine-base -f Dockerfile-base .
@@ -60,21 +60,20 @@ tags:
 	docker tag redis-base $(DUSER)/redis-base:$(VERSION)
 	docker tag google-gcloud-base $(DUSER)/google-cloud-base:$(VERSION)
 	docker tag nats-streaming-base $(DUSER)/nats-streaming-base:$(VERSION)
+	$(foreach version, $(GOVERSION), docker tag golang-$(version)-base $(DUSER)/golang-$(version)-base:$(VERSION);)
 
 tags-versions:
-	$(foreach version, $(GOVERSION), docker tag golang-$(version)-base $(DUSER)/golang-$(version)-base:$(VERSION);)
 	$(foreach version, $(GOVERSION), docker tag gcloud-golang-$(version)-base $(DUSER)/gcloud-golang-$(version)-base:$(VERSION);)
 	$(foreach component, $(COMPONENTS), docker tag google-$(component)-base $(DUSER)/google-$(component)-base:$(VERSION);)
 
-tags-pubsub:
+tags-pubsub-components:
 	$(foreach version, $(GOVERSION), docker tag nats-golang-$(version)-base $(DUSER)/nats-golang-$(version)-base:$(VERSION);)
 	$(foreach version, $(GOVERSION), docker tag kafka-golang-$(version)-base $(DUSER)/kafka-golang-$(version)-base:$(VERSION);)
 	$(foreach version, $(GOVERSION), docker tag redis-golang-$(version)-base $(DUSER)/redis-golang-$(version)-base:$(VERSION);)
 	$(foreach version, $(GOVERSION), docker tag nats-streaming-golang-$(version)-base $(DUSER)/nats-streaming-golang-$(version)-base:$(VERSION);)
 
-tags-components:
+tags-golang-components:
 	for version in $(GOVERSION); do for component in $(COMPONENTS); do docker tag gcloud-golang-$$version-$$component-base $(DUSER)/gcloud-golang-$$version-$$component-base:$(VERSION); done done
-
 
 push:
 	docker push $(DUSER)/nats-base:$(VERSION)
