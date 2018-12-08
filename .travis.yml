@@ -1,4 +1,4 @@
-language: minimal
+language: generic
 
 # make use of vm's
 sudo: 'required'
