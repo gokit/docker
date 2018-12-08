@@ -1,4 +1,4 @@
-FROM influx6/alpine-base:0.1
+FROM influx6/kafka-base:0.1
 
 # set up nsswitch.conf for Go's "netgo" implementation
 # - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
@@ -9,11 +9,11 @@ ARG VERSION=1.11.2
 RUN set -eux; \
 	env GOLANG_VERSION=$VERSION; \
 	apk add --no-cache --virtual .build-deps \
-		gcc \
 		coreutils \
 		linux-headers \
 		openssl \
-		go; \
+		go \
+	; \
 	export \
 # set GOROOT_BOOTSTRAP such that we can actually build Go
 		GOROOT_BOOTSTRAP="$(go env GOROOT)" \
@@ -53,3 +53,4 @@ RUN set -eux; \
 
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
