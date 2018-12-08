@@ -24,6 +24,9 @@ build-bases: build-base
 	docker build -t google-cloud-base -f Dockerfile-gcloud .
 	docker build -t nats-streaming-base -f Dockerfile-nats-streaming .
 
+build-components:
+	$(foreach component, $(COMPONENTS), docker build --build-arg component=$(component) -t google-$(component)-base -f Dockerfile-google-components .;)
+
 tags:
 	docker tag golang-base-1-11-2:$(VERSION) $(DUSER)/golang-base-1-11-2:$(VERSION)
 	docker tag golang-base-1-11-1:$(VERSION) $(DUSER)/golang-base-1-11-1:$(VERSION)
@@ -37,9 +40,6 @@ tags:
 	docker tag kafka-base $(DUSER)/kafka-base:$(VERSION)
 	docker tag redis-base $(DUSER)/redis-base:$(VERSION)
 	$(foreach component, $(COMPONENTS), docker tag google-$(component)-base $(DUSER)/google-$(component)-base:$(VERSION);)
-
-build-components:
-	$(foreach component, $(COMPONENTS), docker build --build-arg component=$(component) -t google-$(component)-base -f Dockerfile-google-components .;)
 
 push:
 	docker push $(DUSER)/alpine-base:$(VERSION)
