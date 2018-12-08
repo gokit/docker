@@ -13,11 +13,11 @@ services:
 before_install:
 - './.travis/main.sh'
 
-# first execute the test suite.
-# after the test execution is done and didn't
-# fail, build the images (if this step fails
-# the whole Travis build is considered a failure).
-script:
+before_script:
+- if [[ "$TRAVIS_BRANCH" == "master" ]]; then
+  docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
+  fi
+
 
 # only execute the following instructions in
 # the case of a success (failing at this point
@@ -28,10 +28,19 @@ script:
 # page of your repository and then change the
 # environment in the settings pannel.
 after_success:
-- if [[ "$TRAVIS_BRANCH" == "master" ]]; then
-  docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
-  make default;
-  fi
+
+# first execute the test suite.
+# after the test execution is done and didn't
+# fail, build the images (if this step fails
+# the whole Travis build is considered a failure).
+script:
+
+jobs:
+  include:
+  stage: go1.11.2-builds
+  script: GOVERSION=1.11.2 make default
+  stage: go1.11.1-builds
+  script: GOVERSION=1.11.1 make default
 
 # don't notify me when things fail
 notifications:
