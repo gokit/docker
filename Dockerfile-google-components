@@ -1,7 +1,9 @@
 FROM influx6/google-cloud-base:0.1
 
+ARG component
+
 RUN set -xe && \
-	gcloud components install pubsub-emulator && \
+	gcloud components install $component && \
 	gcloud components update
 
 VOLUME ["/root/.config"]
