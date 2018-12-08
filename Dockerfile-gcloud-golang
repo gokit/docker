@@ -9,6 +9,7 @@ ARG VERSION=1.11.2
 RUN set -eux; \
 	env GOLANG_VERSION=$VERSION; \
 	apk add --no-cache --virtual .build-deps \
+		musl-dev \
 		gcc \
 		coreutils \
 		linux-headers \

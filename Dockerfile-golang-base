@@ -10,6 +10,7 @@ RUN set -eux; \
 	env GOLANG_VERSION=$VERSION; \
 	apk add --no-cache --virtual .build-deps \
 		gcc \
+		musl-dev \
 		coreutils \
 		linux-headers \
 		openssl \

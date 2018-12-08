@@ -11,6 +11,7 @@ RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
 		gcc \
 		coreutils \
+		musl-dev \
 		linux-headers \
 		openssl \
 		go \
