@@ -14,7 +14,7 @@ build: build-bases build-google-components tags build-components
 
 build-bases: build-base build-pubsub build-golang build-gcloud-golang
 
-build-components: build-kafka-golang build-nats-golang build-nats-streaming-golang build-redis-golang build-golang-components
+build-components: tag-pubsub build-kafka-golang build-nats-golang build-nats-streaming-golang build-redis-golang build-golang-components tag-components
 
 build-base:
 	docker build -t alpine-base -f Dockerfile-base .
@@ -61,12 +61,17 @@ tags:
 	docker tag nats-streaming-base $(DUSER)/nats-streaming-base:$(VERSION)
 	$(foreach version, $(GOVERSION), docker tag golang-$(version)-base $(DUSER)/golang-$(version)-base:$(VERSION);)
 	$(foreach version, $(GOVERSION), docker tag gcloud-golang-$(version)-base $(DUSER)/gcloud-golang-$(version)-base:$(VERSION);)
+	$(foreach component, $(COMPONENTS), docker tag google-$(component)-base $(DUSER)/google-$(component)-base:$(VERSION);)
+
+tag-pubsub:
 	$(foreach version, $(GOVERSION), docker tag nats-golang-$(version)-base $(DUSER)/nats-golang-$(version)-base:$(VERSION);)
 	$(foreach version, $(GOVERSION), docker tag kafka-golang-$(version)-base $(DUSER)/kafka-golang-$(version)-base:$(VERSION);)
 	$(foreach version, $(GOVERSION), docker tag redis-golang-$(version)-base $(DUSER)/redis-golang-$(version)-base:$(VERSION);)
 	$(foreach version, $(GOVERSION), docker tag nats-streaming-golang-$(version)-base $(DUSER)/nats-streaming-golang-$(version)-base:$(VERSION);)
-	$(foreach component, $(COMPONENTS), docker tag google-$(component)-base $(DUSER)/google-$(component)-base:$(VERSION);)
+
+tag-components:
 	for version in $(GOVERSION); do for component in $(COMPONENTS); do docker tag gcloud-golang-$$version-$$component-base $(DUSER)/gcloud-golang-$$version-$$component-base:$(VERSION); done done
+
 
 push:
 	docker push $(DUSER)/nats-base:$(VERSION)
