@@ -6,8 +6,8 @@ RUN apk add --no-cache mongodb && rm /usr/bin/mongoperf && rm -rf /var/cache/apk
 # Create the db directory and expose it for usage.
 # to add group: addgroup -S mariadb
 # to add user: adduser -S mariadb
-RUN addgroup -S mongodb
-RUN adduser -S -g mongodb mongodb
+# RUN addgroup -S mongodb
+# RUN adduser -S -g mongodb mongodb
 RUN mkdir -p /data/db/mongodb/logs
 RUN mkdir -p /etc/mongodb
 RUN chown -R mongodb:mongodb /etc/mongodb
