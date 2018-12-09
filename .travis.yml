@@ -44,8 +44,6 @@ jobs:
     - script: GOVERSION=1.9 COMPONENTS=pubsub-emulator make default
     - script: GOVERSION=1.8 COMPONENTS=pubsub-emulator make default
     - script: GOVERSION=1.7 COMPONENTS=pubsub-emulator make default
-    - script: GOVERSION=1.6 COMPONENTS=pubsub-emulator make default
-    - script: GOVERSION=1.5 COMPONENTSpubsub-emulator make default
 
 # don't notify me when things fail
 notifications:
