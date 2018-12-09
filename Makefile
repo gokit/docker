@@ -80,7 +80,7 @@ push:
 	docker push $(DUSER)/kafka-base:$(VERSION)
 	docker push $(DUSER)/redis-base:$(VERSION)
 	docker push $(DUSER)/alpine-base:$(VERSION)
-	docker push $(DUSER)/google-cloud-base:$(VERSION)
+	docker push $(DUSER)/google-gcloud-base:$(VERSION)
 	docker push $(DUSER)/google-pubsub-base:$(VERSION)
 	docker push $(DUSER)/nats-streaming-base:$(VERSION)
 	$(foreach version, $(GOVERSION), docker push $(DUSER)/golang-$(version)-base;)
