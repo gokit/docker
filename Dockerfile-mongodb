@@ -24,4 +24,3 @@ ENV MONGODB_PORT 27017
 
 COPY ./mongo/bootmgo /bin/bootmgo
 RUN chmod +x /bin/bootmgo
-
