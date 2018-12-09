@@ -38,12 +38,13 @@ script:
 jobs:
   include:
   - stage: go1.11.2-builds-pubsub
-    script: GOVERSION=1.11.2 COMPONENTS=pubsub-emulator make default
-    - script: GOVERSION=1.11.1 COMPONENTS=pubsub-emulator make default
-    - script: GOVERSION=1.10 COMPONENTS=pubsub-emulator make default
-    - script: GOVERSION=1.9 COMPONENTS=pubsub-emulator make default
-    - script: GOVERSION=1.8 COMPONENTS=pubsub-emulator make default
-    - script: GOVERSION=1.7 COMPONENTS=pubsub-emulator make default
+    script:
+      - GOVERSION=1.11.2 COMPONENTS=pubsub-emulator make default
+      - GOVERSION=1.11.1 COMPONENTS=pubsub-emulator make default
+      - GOVERSION=1.10 COMPONENTS=pubsub-emulator make default
+      - GOVERSION=1.9 COMPONENTS=pubsub-emulator make default
+      - GOVERSION=1.8 COMPONENTS=pubsub-emulator make default
+      - GOVERSION=1.7 COMPONENTS=pubsub-emulator make default
 
 # don't notify me when things fail
 notifications:
