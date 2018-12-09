@@ -14,7 +14,7 @@ build: build-bases tags build-google-components build-gcloud-golang tags-version
 
 build-bases: build-base build-pubsub build-golang
 
-build-components:  build-kafka-golang build-nats-golang build-nats-streaming-golang build-redis-golang tags-pubsub-components build-golang-components tags-golang-components
+build-components:  build-kafka-golang build-mariadb-golang build-mongodb-golang build-nodejs-golang  build-postgresql-golang build-nats-golang build-nats-streaming-golang build-redis-golang tags-pubsub-components build-golang-components tags-golang-components
 
 build-base:
 	docker build -t alpine-base -f Dockerfile-base .
@@ -24,11 +24,27 @@ build-pubsub:
 	docker build -t nats-base -f Dockerfile-nats .
 	docker build -t kafka-base -f Dockerfile-kafka .
 	docker build -t redis-base -f Dockerfile-redis .
+	docker build -t nodejs-base -f Dockerfile-nodejs .
+	docker build -t mariadb-base -f Dockerfile-mariadb .
+	docker build -t mongodb-base -f Dockerfile-mongodb .
+	docker build -t postgresql-base -f Dockerfile-postgresql .
 	docker build -t google-gcloud-base -f Dockerfile-gcloud .
 	docker build -t nats-streaming-base -f Dockerfile-nats-streaming .
 
 build-golang:
 	$(foreach version, $(GOVERSION), docker build --build-arg VERSION=$(version) -t golang-$(version)-base -f Dockerfile-golang-base .;)
+
+build-postgresql-golang:
+	$(foreach version, $(GOVERSION), docker build --build-arg VERSION=$(version) -t postgresql-golang-$(version)-base -f Dockerfile-postgresql-go .;)
+
+build-nodejs-golang:
+	$(foreach version, $(GOVERSION), docker build --build-arg VERSION=$(version) -t nodejs-golang-$(version)-base -f Dockerfile-nodejs-go .;)
+
+build-mongodb-golang:
+	$(foreach version, $(GOVERSION), docker build --build-arg VERSION=$(version) -t mongodb-golang-$(version)-base -f Dockerfile-mongodb-go .;)
+
+build-mariadb-golang:
+	$(foreach version, $(GOVERSION), docker build --build-arg VERSION=$(version) -t mariadb-golang-$(version)-base -f Dockerfile-mariadb-go .;)
 
 build-redis-golang:
 	$(foreach version, $(GOVERSION), docker build --build-arg VERSION=$(version) -t redis-golang-$(version)-base -f Dockerfile-redis-golang .;)
@@ -58,6 +74,10 @@ tags:
 	docker tag nats-base $(DUSER)/nats-base:$(VERSION)
 	docker tag kafka-base $(DUSER)/kafka-base:$(VERSION)
 	docker tag redis-base $(DUSER)/redis-base:$(VERSION)
+	docker tag nodejs-base $(DUSER)/nodejs-base:$(VERSION)
+	docker tag mariadb-base $(DUSER)/mariadb-base:$(VERSION)
+	docker tag mongodb-base $(DUSER)/mongodb-base:$(VERSION)
+	docker tag postgresql-base $(DUSER)/postgresql-base:$(VERSION)
 	docker tag google-gcloud-base $(DUSER)/google-gcloud-base:$(VERSION)
 	docker tag nats-streaming-base $(DUSER)/nats-streaming-base:$(VERSION)
 	$(foreach version, $(GOVERSION), docker tag golang-$(version)-base $(DUSER)/golang-$(version)-base:$(VERSION);)
@@ -67,6 +87,10 @@ tags-versions:
 	$(foreach component, $(COMPONENTS), docker tag google-$(component)-base $(DUSER)/google-$(component)-base:$(VERSION);)
 
 tags-pubsub-components:
+	$(foreach version, $(GOVERSION), docker tag mariadb-golang-$(version)-base $(DUSER)/mariadb-golang-$(version)-base:$(VERSION);)
+	$(foreach version, $(GOVERSION), docker tag mongodb-golang-$(version)-base $(DUSER)/mongodb-golang-$(version)-base:$(VERSION);)
+	$(foreach version, $(GOVERSION), docker tag nodejs-golang-$(version)-base $(DUSER)/nodejs-golang-$(version)-base:$(VERSION);)
+	$(foreach version, $(GOVERSION), docker tag postgresql-golang-$(version)-base $(DUSER)/postgresql-golang-$(version)-base:$(VERSION);)
 	$(foreach version, $(GOVERSION), docker tag nats-golang-$(version)-base $(DUSER)/nats-golang-$(version)-base:$(VERSION);)
 	$(foreach version, $(GOVERSION), docker tag kafka-golang-$(version)-base $(DUSER)/kafka-golang-$(version)-base:$(VERSION);)
 	$(foreach version, $(GOVERSION), docker tag redis-golang-$(version)-base $(DUSER)/redis-golang-$(version)-base:$(VERSION);)
@@ -80,10 +104,18 @@ push:
 	docker push $(DUSER)/kafka-base:$(VERSION)
 	docker push $(DUSER)/redis-base:$(VERSION)
 	docker push $(DUSER)/alpine-base:$(VERSION)
+	docker push $(DUSER)/mariadb-base:$(VERSION)
+	docker push $(DUSER)/mongodb-base:$(VERSION)
+	docker push $(DUSER)/nodejs-base:$(VERSION)
+	docker push $(DUSER)/postgresql-base:$(VERSION)
 	docker push $(DUSER)/google-gcloud-base:$(VERSION)
 	docker push $(DUSER)/nats-streaming-base:$(VERSION)
 	$(foreach version, $(GOVERSION), docker push $(DUSER)/golang-$(version)-base;)
 	$(foreach version, $(GOVERSION), docker push $(DUSER)/nats-golang-$(version)-base;)
+	$(foreach version, $(GOVERSION), docker push $(DUSER)/mariadb-golang-$(version)-base;)
+	$(foreach version, $(GOVERSION), docker push $(DUSER)/mongodb-golang-$(version)-base;)
+	$(foreach version, $(GOVERSION), docker push $(DUSER)/nodejs-golang-$(version)-base;)
+	$(foreach version, $(GOVERSION), docker push $(DUSER)/postgresql-golang-$(version)-base;)
 	$(foreach version, $(GOVERSION), docker push $(DUSER)/kafka-golang-$(version)-base;)
 	$(foreach version, $(GOVERSION), docker push $(DUSER)/redis-golang-$(version)-base;)
 	$(foreach version, $(GOVERSION), docker push $(DUSER)/gcloud-golang-$(version)-base;)

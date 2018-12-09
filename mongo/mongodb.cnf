@@ -1,0 +1,4 @@
+dbpath=/data/db/mongodb
+logpath=/data/db/mongodb/logs/mongodb.logs
+bind_ip = 0.0.0.0
+logappend=true
