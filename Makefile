@@ -8,8 +8,6 @@ define COMPONENT_DOCKER_FORMAT
 FROM #FROM\nARG component\nRUN set -xe && gcloud components install $$component && gcloud components update\n
 endef
 
-default: build push
-
 build: build-base build-golang build-gcloud build-redis build-kafka build-mongodb build-mariadb build-nodejs build-nats build-nats-streaming build-postgres
 
 build-base:
