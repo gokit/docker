@@ -1,5 +1,7 @@
 Docker Images
 ----------------
+[![Travis Build](https://travis-ci.org/gokit/docker.svg?branch=master)](https://travis-ci.org/gokit/docker#)
+
 This repository is a collection of useful docker based image files which can be generated for use in tests or for building/compiling
 related programs. They exists as base to be used for such function, the generated images for some are rather large and not advisable 
 to be used in production but only for testing, developing or pilot deployments.
