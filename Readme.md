@@ -19,7 +19,7 @@ VERSION=0.0.1 DUSER=wombat make push
 ```
 
 You can generate builds for custom go versions and custom google components for gcloud docker
-images by customizing the `GOVERSION` and `COMPONENT` environment variables to your needs.
+images by customizing the `GOVERSION` and `COMPONENTS` environment variables to your needs.
 
 ```bash
 GOVERSION=1.11.2 COMPONENTS=pubsub-emulator make default
@@ -28,7 +28,7 @@ GOVERSION=1.11.2 COMPONENTS=pubsub-emulator make default
 The above only builds all images for the go version `1.11.2` and only the gcloud 
 component `pubsub-emulator`.
 
-The `GOVERSION` and `COMPONENT` make variables can be set to list items which are strings 
+The `GOVERSION` and `COMPONENTS` make variables can be set to list items which are strings 
 seperated by space like below:
 
 ```bash
