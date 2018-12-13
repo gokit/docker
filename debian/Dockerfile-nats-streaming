@@ -1,11 +1,11 @@
-FROM influx6/alpine-base:0.1
+FROM influx6/debian-debian-base:0.1
 MAINTAINER Alexander Ewetumo <trinoxf@gmail.com>
 
 RUN mkdir /scripts
-ADD nats-setup.sh /scripts/nats-setup.sh
+ADD nats-setup.sh /scripts/nats-streaming-setup.sh
 ADD gnats.conf /scripts/gnats.conf
 
 # Expose client, management, and cluster ports
 EXPOSE 4222 8222 6222
 
-RUN /scripts/nats-setup.sh
+RUN /scripts/nats-streaming-setup.sh

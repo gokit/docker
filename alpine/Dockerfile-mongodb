@@ -1,4 +1,4 @@
-FROM influx6/alpine-base:0.1
+FROM influx6/alpine-alpine-base:0.1
 MAINTAINER Ewetumo Alexander <trinoxf@gmail.com>
 
 RUN apk add --no-cache mongodb && rm /usr/bin/mongoperf && rm -rf /var/cache/apk/*

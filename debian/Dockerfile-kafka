@@ -6,7 +6,7 @@ ENV  GLIBC_REPO=https://github.com/sgerrand/alpine-pkg-glibc \
          LANG=C.UTF-8
 
 RUN mkdir /scripts && \
-	apk --no-cache add make librdkafka musl-dev gcc
+	apt install -y make librdkafka libc-dev gcc
 
 ADD kafka-*.sh /scripts/
 

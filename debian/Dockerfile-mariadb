@@ -1,8 +1,8 @@
-FROM influx6/alpine-base:0.1
+FROM influx6/debian-debian-base:0.1
 MAINTAINER Ewetumo Alexander <trinoxf@gmail.com>
 
 RUN apk update && apk upgrade
-RUN apk add --no-cache go openrc mysql mysql-client && rm -f /var/cache/apk/*
+RUN apt install -y go openrc mysql mysql-client && rm -f /var/cache/apk/*
 
 # Create the db directory and expose it for usage.
 # to add group: addgroup -S mariadb

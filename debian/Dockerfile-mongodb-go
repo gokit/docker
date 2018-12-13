@@ -1,4 +1,4 @@
-FROM influx6/nodejs-base:0.1
+FROM influx6/mongodb-debian-base:0.1
 
 # set up nsswitch.conf for Go's "netgo" implementation
 # - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
@@ -8,10 +8,10 @@ ARG VERSION=1.11.2
 
 RUN set -eux; \
 	env GOLANG_VERSION=$VERSION; \
-	apk add --no-cache --virtual .build-deps \
+	apt install -y --virtual .build-deps \
 		gcc \
 		coreutils \
-		musl-dev \
+		libc-dev \
 		linux-headers \
 		openssl \
 		go \
@@ -48,7 +48,7 @@ RUN set -eux; \
 # https://github.com/golang/build/blob/e3fe1605c30f6a3fd136b561569933312ede8782/cmd/release/releaselet.go#L56
 		/usr/local/go/pkg/obj \
 	; \
-	apk del .build-deps; \
+	rm -rf /var/cache/apt/archives \
 	\
 	export PATH="/usr/local/go/bin:$PATH"; \
 	go version

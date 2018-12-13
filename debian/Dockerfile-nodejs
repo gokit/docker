@@ -1,12 +1,12 @@
-FROM alpine:edge
+FROM influx6/debian-debian-base:0.1
 
 ARG VERSION=v9.4.0
 ARG NPM_VERSION=5
 
 # For base builds
-ENV CONFIG_FLAGS="--fully-static" DEL_PKGS="libstdc++" RM_DIRS=/usr/include
+ENV CONFIG_FLAGS="--fully-static" DEL_PKGS="" RM_DIRS=/usr/include
 
-RUN apk add --no-cache musl-dev libc-dev curl make gcc g++ python linux-headers binutils-gold gnupg libstdc++ && \
+RUN apt install -y libc-dev curl make gcc g++ python linux-headers binutils-gold gnupg && \
   for server in pgp.mit.edu keyserver.pgp.com ha.pool.sks-keyservers.net; do \
     gpg --keyserver $server --recv-keys \
       94AE36675C464D64BAFA68DD7434390BDBE9B9C5 \
@@ -33,7 +33,7 @@ RUN apk add --no-cache musl-dev libc-dev curl make gcc g++ python linux-headers 
     fi; \
     find /usr/lib/node_modules/npm -name test -o -name .bin -type d | xargs rm -rf; \
   fi && \
-  apk del curl make gcc g++ python linux-headers binutils-gold gnupg ${DEL_PKGS} && \
+  rm -rf /var/cache/apt/archives && \
   rm -rf ${RM_DIRS} /node-$VERSION* /usr/share/man /tmp/* /var/cache/apk/* \
     /root/.npm /root/.node-gyp /root/.gnupg /usr/lib/node_modules/npm/man \
 /usr/lib/node_modules/npm/doc /usr/lib/node_modules/npm/html /usr/lib/node_modules/npm/scriptsm/doc /usr/lib/node_modules/npm/html /usr/lib/node_modules/npm/scripts
