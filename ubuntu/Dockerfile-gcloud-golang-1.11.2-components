@@ -1,0 +1,4 @@
+FROM influx6/gcloud-golang-1.11.2-base:0.1
+ARG component
+RUN set -xe && gcloud components install $component && gcloud components update
+

@@ -1,0 +1,8 @@
+FROM influx6/google-gcloud-base:0.1
+
+ARG component
+
+RUN set -xe && \
+	gcloud components install $component && \
+	gcloud components update
+

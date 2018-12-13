@@ -1,0 +1,31 @@
+FROM influx6/alpine-base:0.1
+MAINTAINER Ewetumo Alexander <trinoxf@gmail.com>
+
+RUN apk update && apk upgrade
+RUN apk add --no-cache go openrc mysql mysql-client && rm -f /var/cache/apk/*
+
+# Create the db directory and expose it for usage.
+# to add group: addgroup -S mariadb
+# to add user: adduser -S mariadb
+RUN addgroup -S mariadb
+RUN adduser -S -g mariadb mariadb
+RUN mkdir -p /data/db/mysql/logs
+RUN mkdir -p /etc/mysql
+
+# Copy mysql configuration to the etc folder.
+COPY mariadb/mysql.cnf /etc/mysql/my.cnf
+
+RUN chown -R mariadb:mariadb /etc/mysql
+RUN chown -R mariadb:mariadb /data/db/mysql
+VOLUME /data/db/mysql
+
+
+# Copy the mysql startup so we can run up the server.
+COPY mariadb/bootsql /bin/bootsql
+RUN chmod +x /bin/bootsql
+
+# Add default port for mysql.
+ENV MYSQL_PORT 3306
+
+# Expose port for mysql usage.
+EXPOSE 3306
