@@ -25,8 +25,6 @@ build-base:
 build-bases:
 	docker build -t $(BASE)-base -f $(DIR)/Dockerfile-base .
 	docker tag $(BASE)-base $(DUSER)/$(BASE)-base:$(VERSION)
-	docker build -t postgresql-$(BASE)-base -f $(DIR)/Dockerfile-postgresql .
-	docker tag postgresql-$(BASE)-base $(DUSER)/postgresql-$(BASE)-base:$(VERSION)
 	docker build -t mongodb-$(BASE)-base -f $(DIR)/Dockerfile-mongodb .
 	docker tag mongodb-$(BASE)-base $(DUSER)/mongodb-$(BASE)-base:$(VERSION)
 	docker build -t mariadb-$(BASE)-base -f $(DIR)/Dockerfile-mariadb .
@@ -49,8 +47,14 @@ build-node-base:
 push-node-base:
 	docker push $(DUSER)/nodejs-$(BASE)-base:$(VERSION)
 
-push-bases:
+build-postgre-base:
+	docker build -t postgresql-$(BASE)-base -f $(DIR)/Dockerfile-postgresql .
+	docker tag postgresql-$(BASE)-base $(DUSER)/postgresql-$(BASE)-base:$(VERSION)
+
+push-postgre-base:
 	docker push $(DUSER)/postgresql-$(BASE)-base:$(VERSION)
+
+push-bases:
 	docker push $(DUSER)/mongodb-$(BASE)-base:$(VERSION)
 	docker push $(DUSER)/mariadb-$(BASE)-base:$(VERSION)
 	docker push $(DUSER)/google-gcloud-$(BASE)-base:$(VERSION)
