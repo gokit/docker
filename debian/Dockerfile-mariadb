@@ -1,24 +1,151 @@
 FROM influx6/debian-base:0.1
-MAINTAINER Ewetumo Alexander <trinoxf@gmail.com>
 
-RUN apk update && apk upgrade
-RUN apt install -y go openrc mysql mysql-client && rm -f /var/cache/apk/*
+RUN set -ex; \
+	if ! command -v gpg > /dev/null; then \
+		apt-get update; \
+		apt-get install -y --no-install-recommends \
+			gnupg \
+			dirmngr \
+			apt-transport-https ca-certificates \
+			ca-certificates wget \
+			pwgen \
+			tzdata \
+		; \
+		rm -rf /var/lib/apt/lists/*; \
+	fi
 
-# Create the db directory and expose it for usage.
-# to add group: addgroup -S mariadb
-# to add user: adduser -S mariadb
-RUN addgroup -S mariadb
-RUN adduser -S -g mariadb mariadb
+# grab gosu for easy step-down from root
+ENV GOSU_VERSION 1.10
+
+ADD ./gosu/* /usr/local/gosu/
+RUN set -x; dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; cp /usr/local/gosu/gosu-$dpkgArch /usr/local/bin/gosu; rm -rf /usr/local/gosu
+
+
+# explicitly set user/group IDs
+RUN set -eux; \
+	groupadd -r mysql;  \
+# https://salsa.debian.org/postgresql/postgresql-common/blob/997d842ee744687d99a2b2d95c1083a2615c79e8/debian/postgresql-common.postinst#L32-35
+	useradd -r -g mysql mysql; \
+# also create the postgres user's home directory with appropriate permissions
+# see https://github.com/docker-library/postgres/issues/274
+	mkdir -p /var/lib/mysql; \
+	chown -R mysql:mysql /var/lib/mysql
+
+RUN chmod +x /usr/local/bin/gosu; gosu nobody true;
+
+# make the "en_US.UTF-8" locale so postgres will be utf-8 enabled by default
+RUN set -eux; \
+	if [ -f /etc/dpkg/dpkg.cfg.d/docker ]; then \
+# if this file exists, we're likely in "debian:xxx-slim", and locales are thus being excluded so we need to remove that exclusion (since we need locales)
+		grep -q '/usr/share/locale' /etc/dpkg/dpkg.cfg.d/docker; \
+		sed -ri '/\/usr\/share\/locale/d' /etc/dpkg/dpkg.cfg.d/docker; \
+		! grep -q '/usr/share/locale' /etc/dpkg/dpkg.cfg.d/docker; \
+	fi; \
+	apt-get update; apt-get install -y locales; rm -rf /var/lib/apt/lists/*; \
+	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV LANG en_US.utf8
+
+# install "nss_wrapper" in case we need to fake "/etc/passwd" and "/etc/group" (especially for OpenShift)
+# https://github.com/docker-library/postgres/issues/359
+# https://cwrap.org/nss_wrapper.html
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends libnss-wrapper; \
+	rm -rf /var/lib/apt/lists/*
+
+RUN mkdir /docker-entrypoint-initdb.d
+
+
+ENV GPG_KEYS \
+# Key fingerprint = 1993 69E5 404B D5FC 7D2F  E43B CBCB 082A 1BB9 43DB
+# MariaDB Package Signing Key <package-signing-key@mariadb.org>
+# for MariaDB 5.5
+	199369E5404BD5FC7D2FE43BCBCB082A1BB943DB \
+# pub   rsa4096 2016-03-30 [SC]
+#         177F 4010 FE56 CA33 3630  0305 F165 6F24 C74C D1D8
+# uid           [ unknown] MariaDB Signing Key <signing-key@mariadb.org>
+# sub   rsa4096 2016-03-30 [E]
+# for MariaDB 10+
+	177F4010FE56CA3336300305F1656F24C74CD1D8 \
+# pub   1024D/CD2EFD2A 2009-12-15
+#       Key fingerprint = 430B DF5C 56E7 C94E 848E  E60C 1C4C BDCD CD2E FD2A
+# uid                  Percona MySQL Development Team <mysql-dev@percona.com>
+# sub   2048g/2D607DAF 2009-12-15
+	430BDF5C56E7C94E848EE60C1C4CBDCDCD2EFD2A \
+# pub   4096R/8507EFA5 2016-06-30
+#       Key fingerprint = 4D1B B29D 63D9 8E42 2B21  13B1 9334 A25F 8507 EFA5
+# uid                  Percona MySQL Development Team (Packaging key) <mysql-dev@percona.com>
+# sub   4096R/4CAC6D72 2016-06-30
+	4D1BB29D63D98E422B2113B19334A25F8507EFA5
+RUN set -ex; \
+	export GNUPGHOME="$(mktemp -d)"; \
+	for key in $GPG_KEYS; do \
+		gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+	done; \
+	gpg --batch --export $GPG_KEYS > /etc/apt/trusted.gpg.d/mariadb.gpg; \
+	command -v gpgconf > /dev/null && gpgconf --kill all || :; \
+	rm -r "$GNUPGHOME"; \
+	apt-key list
+
+# bashbrew-architectures: amd64 arm64v8 ppc64le
+ENV MARIADB_MAJOR 10.4
+ENV MARIADB_VERSION 10.4.0
+
+RUN set -e;\
+	echo "deb http://ftp.osuosl.org/pub/mariadb/repo/$MARIADB_MAJOR/debian stretch main" > /etc/apt/sources.list.d/mariadb.list; \
+	{ \
+		echo 'Package: *'; \
+		echo 'Pin: release o=MariaDB'; \
+		echo 'Pin-Priority: 999'; \
+	} > /etc/apt/preferences.d/mariadb
+# add repository pinning to make sure dependencies from this MariaDB repo are preferred over Debian dependencies
+#  libmariadbclient18 : Depends: libmysqlclient18 (= 5.5.42+maria-1~wheezy) but 5.5.43-0+deb7u1 is to be installed
+
+# the "/var/lib/mysql" stuff here is because the mysql-server postinst doesn't have an explicit way to disable the mysql_install_db codepath besides having a database already "configured" (ie, stuff in /var/lib/mysql/mysql)
+# also, we set debconf keys to make APT a little quieter
+RUN set -ex; \
+	{ \
+		echo "mariadb-server-$MARIADB_MAJOR" mysql-server/root_password password 'unused'; \
+		echo "mariadb-server-$MARIADB_MAJOR" mysql-server/root_password_again password 'unused'; \
+	} | debconf-set-selections; \
+	backupPackage='mariadb-backup'; \
+	apt-get update; \
+	apt-get install -y \
+		"mariadb-server" \
+# percona-xtrabackup/mariadb-backup is installed at the same time so that `mysql-common` is only installed once from just mariadb repos
+		$backupPackage \
+		socat \
+	; \
+	rm -rf /var/lib/apt/lists/*; \
+# comment out any "user" entires in the MySQL config ("docker-entrypoint.sh" or "--user" will handle user switching)
+	sed -ri 's/^user\s/#&/' /etc/mysql/my.cnf /etc/mysql/conf.d/*; \
+# purge and re-create /var/lib/mysql with appropriate ownership
+	rm -rf /var/lib/mysql; \
+	mkdir -p /var/lib/mysql /var/run/mysqld; \
+	chown -R mysql:mysql /var/lib/mysql /var/run/mysqld; \
+# ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
+	chmod 777 /var/run/mysqld; \
+# comment out a few problematic configuration values
+	find /etc/mysql/ -name '*.cnf' -print0 \
+		| xargs -0 grep -lZE '^(bind-address|log)' \
+		| xargs -rt -0 sed -Ei 's/^(bind-address|log)/#&/'; \
+# don't reverse lookup hostnames, they are usually another container
+	echo '[mysqld]\nskip-host-cache\nskip-name-resolve' > /etc/mysql/conf.d/docker.cnf
+
+VOLUME /var/lib/mysql
+
+COPY ./mariadb/entrypoint.sh /usr/local/bin/
+RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
+
 RUN mkdir -p /data/db/mysql/logs
 RUN mkdir -p /etc/mysql
 
 # Copy mysql configuration to the etc folder.
 COPY mariadb/mysql.cnf /etc/mysql/my.cnf
 
-RUN chown -R mariadb:mariadb /etc/mysql
-RUN chown -R mariadb:mariadb /data/db/mysql
+RUN chown -R mysql:mysql /etc/mysql
+RUN chown -R mysql:mysql /data/db/mysql
 VOLUME /data/db/mysql
-
 
 # Copy the mysql startup so we can run up the server.
 COPY mariadb/bootsql /bin/bootsql
