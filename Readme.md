@@ -9,11 +9,30 @@ to be used in production but only for testing, developing or pilot deployments.
 
 ## Building
 
+Building supports the use of debian and alpine images.
+
+By default `alpine` is always built when running the commands without the `BASE` and `DIR`
+environment variables set.
+
 Running the `make build` command will be all available docker files using provided
 version in tag and user name to be used for tagging and pushing to docker hub.
 
+- Building for alpine
+
 ```bash
 VERSION=0.0.1 DUSER=wombat make build
+```
+
+or
+
+```bash
+VERSION=0.0.1 DUSER=wombat BASE=alpine DIR=alpine make build
+```
+
+- Building for debian 
+
+```bash
+VERSION=0.0.1 DUSER=wombat BASE=debian DIR=debian make build
 ```
 
 You can generate builds for custom go versions and custom google components for gcloud docker
