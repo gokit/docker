@@ -3,8 +3,8 @@ FROM alpine:3.8
 ARG VERSION=11.4.0
 ARG NPM_VERSION=5
 
-RUN addgroup --gid 1000 node \
-  && adduser --uid 1000 --gid node --shell /bin/bash --create-home node
+RUN addgroup -S node \
+  && adduser -S node
 
 RUN buildDeps='xz-utils' \
     && ARCH= && dpkgArch="$(dpkg --print-architecture)" \
