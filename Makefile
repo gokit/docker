@@ -132,3 +132,4 @@ build-gcloud:
 
 generate-golang-component-dockerfiles:
 	$(foreach version, $(GOVERSION), echo '$(subst #FROM,$(DUSER)/gcloud-golang-$(version)-$(BASE)-base:$(VERSION),$(COMPONENT_DOCKER_FORMAT))' > $(DIR)/Dockerfile-gcloud-golang-$(version)-components;)
+
