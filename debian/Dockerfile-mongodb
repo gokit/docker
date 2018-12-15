@@ -42,8 +42,6 @@ RUN set -ex; \
 	apt-get purge -y --auto-remove wget
 
 RUN mkdir /docker-entrypoint-initdb.d
-RUN curl https://www.mongodb.org/static/pgp/server-4.0.asc | apt-key add -
-RUN echo "deb http://repo.mongodb.org/apt/debian stretch/mongodb-org/4.0 main" > /etc/apt/sources.list.d/mongodb-org-4.0.list
 
 ENV GPG_KEYS \
 # pub   rsa4096 2018-04-18 [SC] [expires: 2023-04-17]
@@ -72,7 +70,8 @@ ENV MONGO_PACKAGE=${MONGO_PACKAGE} MONGO_REPO=${MONGO_REPO}
 ENV MONGO_MAJOR 4.0
 ENV MONGO_VERSION 4.0.4
 
-RUN echo "deb http://$MONGO_REPO/apt/debian stretch/${MONGO_PACKAGE%-unstable}/$MONGO_MAJOR main" | tee "/etc/apt/sources.list.d/${MONGO_PACKAGE%-unstable}.list"
+RUN curl https://www.mongodb.org/static/pgp/server-$MONGO_MAJOR.asc | apt-key add -
+RUN echo 'deb http://repo.mongodb.org/apt/debian stretch/mongodb-org/$MONGO_MAJOR main' > /etc/apt/sources.list.d/mongodb-org-$MONGO_MAJOR.list
 
 RUN set -x \
 	&& apt-get update \
