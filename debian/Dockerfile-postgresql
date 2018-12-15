@@ -1,6 +1,6 @@
 FROM influx6/debian-base:0.1
 
-UN set -ex; \
+RUN set -ex; \
 	if ! command -v gpg > /dev/null; then \
 		apt-get update; \
 		apt-get install -y --no-install-recommends \
