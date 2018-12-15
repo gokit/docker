@@ -18,7 +18,7 @@ build-base:
 	docker push $(DUSER)/$(BASE)-base:$(VERSION)
 
 build-golang: 
-	$(foreach version, $(GOVERSION), docker build --build-arg VERSION=$(version) -t golang-$(version)-$(BASE)-base -f $(DIR)/Dockerfile-golang-$(BASE)-base .;)
+	$(foreach version, $(GOVERSION), docker build --build-arg VERSION=$(version) -t golang-$(version)-$(BASE)-base -f $(DIR)/Dockerfile-golang-base .;)
 	$(foreach version, $(GOVERSION), docker tag golang-$(version)-$(BASE)-base $(DUSER)/golang-$(version)-$(BASE)-base:$(VERSION);)
 	# push
 	$(foreach version, $(GOVERSION), docker push $(DUSER)/golang-$(version)-$(BASE)-base;)
