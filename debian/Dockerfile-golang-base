@@ -1,4 +1,4 @@
-FROM influx6/debian-debian-base:0.1
+FROM influx6/debian-base:0.1
 
 # set up nsswitch.conf for Go's "netgo" implementation
 # - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
@@ -10,7 +10,6 @@ RUN set -eux; \
 	env GOLANG_VERSION=$VERSION; \
 	apt install -y --virtual .build-deps \
 		gcc \
-		libc-dev \
 		coreutils \
 		linux-headers \
 		openssl \

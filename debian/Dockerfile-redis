@@ -1,4 +1,4 @@
-FROM influx6/debian-debian-base:0.1
+FROM influx6/debian-base:0.1
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN addgroup -S redis && adduser -S -G redis redis

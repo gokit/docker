@@ -1,4 +1,4 @@
-FROM influx6/debian-debian-base:0.1
+FROM influx6/debian-base:0.1
 
 # alpine includes "postgres" user/group in base install
 #   /etc/passwd:22:postgres:x:70:70::/var/lib/postgresql:/bin/sh

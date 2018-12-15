@@ -1,10 +1,9 @@
 FROM bitnami/minideb:stretch
 MAINTAINER Alexander Ewetumo <trinoxf@gmail.com>
 
-
 RUN set -ex && \
 	apt update && \
-    apt install -y build-essential libc6 glibc glibc-dev libc6-dev wget curl ca-certificates bash unzip
+    apt install -y build-essential git libc6 libc6-dev wget curl ca-certificates bash unzip
 
-RUN rm -rf /var/cache/apt/archives && echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
+RUN rm -rf /var/cache/apt/archives && rm -rf /var/lib/apt/lists/*  && echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
 

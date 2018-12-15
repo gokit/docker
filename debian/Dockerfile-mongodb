@@ -1,4 +1,4 @@
-FROM influx6/debian-debian-base:0.1
+FROM influx6/debian-base:0.1
 MAINTAINER Ewetumo Alexander <trinoxf@gmail.com>
 
 RUN apt install -y mongodb && rm /usr/bin/mongoperf && rm -rf /var/cache/apk/*
