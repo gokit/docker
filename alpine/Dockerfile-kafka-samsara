@@ -1,4 +1,4 @@
-FROM samsara/base-image-jdk8:a33-j8u72
+FROM anapsix/alpine-java
 MAINTAINER Alexander Ewetumo <trinoxf@gmail.com>
 
 ENV  GLIBC_REPO=https://github.com/sgerrand/alpine-pkg-glibc \

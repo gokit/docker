@@ -11,7 +11,7 @@ define COMPONENT_DOCKER_FORMAT
 FROM #FROM\nARG component\nRUN set -xe && gcloud components install $$component && gcloud components update\n
 endef
 
-build: build-base build-golang build-gcloud build-redis build-kafka-rdkafka build-mongodb build-mariadb build-nodejs build-nats build-nats-streaming build-postgres
+build: build-base build-golang build-gcloud build-redis build-kafka-samsara build-kafka-rdkafka build-mongodb build-mariadb build-nodejs build-nats build-nats-streaming build-postgres
 
 build-base:
 ifeq ('$(BUILD_BASE)', 'true')
