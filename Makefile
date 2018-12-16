@@ -25,10 +25,6 @@ endif
 build-bases:
 	docker build -t $(BASE)-base -f $(DIR)/Dockerfile-base .
 	docker tag $(BASE)-base $(DUSER)/$(BASE)-base:$(VERSION)
-	docker build -t mongodb-$(BASE)-base -f $(DIR)/Dockerfile-mongodb .
-	docker tag mongodb-$(BASE)-base $(DUSER)/mongodb-$(BASE)-base:$(VERSION)
-	docker build -t mariadb-$(BASE)-base -f $(DIR)/Dockerfile-mariadb .
-	docker tag mariadb-$(BASE)-base $(DUSER)/mariadb-$(BASE)-base:$(VERSION)
 	docker build -t redis-$(BASE)-base -f $(DIR)/Dockerfile-redis .
 	docker tag redis-$(BASE)-base $(DUSER)/redis-$(BASE)-base:$(VERSION)
 	docker build -t nats-$(BASE)-base -f $(DIR)/Dockerfile-nats .
@@ -37,10 +33,27 @@ build-bases:
 	docker tag nats-streaming-$(BASE)-base $(DUSER)/nats-streaming-$(BASE)-base:$(VERSION)
 	docker build -t google-gcloud-$(BASE)-base -f $(DIR)/Dockerfile-gcloud .
 	docker tag google-gcloud-$(BASE)-base $(DUSER)/google-gcloud-$(BASE)-base:$(VERSION)
+
+push-bases:
+	docker push $(DUSER)/google-gcloud-$(BASE)-base:$(VERSION)
+	docker push $(DUSER)/redis-$(BASE)-base:$(VERSION)
+	docker push $(DUSER)/nats-$(BASE)-base:$(VERSION)
+	docker push $(DUSER)/nats-streaming-$(BASE)-base:$(VERSION)
+	docker push $(DUSER)/google-gcloud-$(BASE)-base:$(VERSION)
+
+build-kafka-plain-base:
 	docker build -t kafka-plain-$(BASE)-base -f $(DIR)/Dockerfile-kafka-plain .
 	docker tag kafka-plain-$(BASE)-base $(DUSER)/kafka-plain-$(BASE)-base:$(VERSION)
+
+build-kafka-rdkafka-base:
 	docker build -t kafka-rdkafka-$(BASE)-base -f $(DIR)/Dockerfile-kafka-rdkafka .
 	docker tag kafka-rdkafka-$(BASE)-base $(DUSER)/kafka-rdkafka-$(BASE)-base:$(VERSION)
+
+push-kafka-plain-base:
+	docker push $(DUSER)/kafka-plain-$(BASE)-base:$(VERSION)
+
+push-kafka-rdkafka-base:
+	docker push $(DUSER)/kafka-rdkafka-$(BASE)-base:$(VERSION)
 
 build-node-base:
 	docker build -t nodejs-$(BASE)-base -f $(DIR)/Dockerfile-nodejs .
@@ -55,17 +68,21 @@ build-postgre-base:
 
 push-postgre-base:
 	docker push $(DUSER)/postgresql-$(BASE)-base:$(VERSION)
+	
+build-mariadb-base:
+	docker build -t mariadb-$(BASE)-base -f $(DIR)/Dockerfile-mariadb .
+	docker tag mariadb-$(BASE)-base $(DUSER)/mariadb-$(BASE)-base:$(VERSION)
 
-push-bases:
-	docker push $(DUSER)/mongodb-$(BASE)-base:$(VERSION)
+push-mariadb-base:
 	docker push $(DUSER)/mariadb-$(BASE)-base:$(VERSION)
-	docker push $(DUSER)/google-gcloud-$(BASE)-base:$(VERSION)
-	docker push $(DUSER)/redis-$(BASE)-base:$(VERSION)
-	docker push $(DUSER)/nats-$(BASE)-base:$(VERSION)
-	docker push $(DUSER)/nats-streaming-$(BASE)-base:$(VERSION)
-	docker push $(DUSER)/google-gcloud-$(BASE)-base:$(VERSION)
-	docker push $(DUSER)/kafka-plain-$(BASE)-base:$(VERSION)
-	docker push $(DUSER)/kafka-rdkafka-$(BASE)-base:$(VERSION)
+
+build-mongodb-base:
+	docker build -t mongodb-$(BASE)-base -f $(DIR)/Dockerfile-mongodb .
+	docker tag mongodb-$(BASE)-base $(DUSER)/mongodb-$(BASE)-base:$(VERSION)
+
+push-mmongodb-base:
+	docker push $(DUSER)/mongodb-$(BASE)-base:$(VERSION)
+
 
 build-golang:
 	$(foreach version, $(GOVERSION), docker build --build-arg VERSION=$(version) -t golang-$(version)-$(BASE)-base -f $(DIR)/Dockerfile-golang-base .;)

@@ -40,10 +40,19 @@ script:
 jobs:
   include:
   - stage: go-images-foundation
-    script: BASE=debian DIR=debian GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-node-base push-node-base
-  - script: BASE=alpine DIR=alpine GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-node-base push-node-base
-  - script: BASE=debian DIR=debian GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-postgre-base push-postgre-base
-  - script: BASE=alpine DIR=alpine GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-postgre-base push-postgre-base
+    script: BASE=debian DIR=debian GOVERSION=1.11.4 make build-node-base push-node-base
+  - script: BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-node-base push-node-base
+  - script: BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-node-base push-node-base
+  - script: BASE=debian DIR=debian GOVERSION=1.11.4  make build-mongodb-base push-mongodb-base
+  - script: BASE=alpine DIR=alpine GOVERSION=1.11.4  make build-mongodb-base push-mongodb-base
+  - script: BASE=debian DIR=debian GOVERSION=1.11.4  make build-mariadb-base push-mariadb-base
+  - script: BASE=alpine DIR=alpine GOVERSION=1.11.4  make build-mariadb-base push-mariadb-base
+  - script: BASE=debian DIR=debian GOVERSION=1.11.4  make build-kafka-plain-base push-kafka-plain-base
+  - script: BASE=alpine DIR=alpine GOVERSION=1.11.4  make build-kafka-plain-base push-kafka-plain-base
+  - script: BASE=debian DIR=debian GOVERSION=1.11.4  make build-kafka-rdkafka-base push-kafka-rdkafka-base
+  - script: BASE=alpine DIR=alpine GOVERSION=1.11.4  make build-kafka-rdkafka-base push-kafka-rdkafka-base
+  - script: BASE=debian DIR=debian GOVERSION=1.11.4  make build-postgre-base push-postgre-base
+  - script: BASE=alpine DIR=alpine GOVERSION=1.11.4  make build-postgre-base push-postgre-base
   - script: BASE=alpine DIR=alpine GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-bases push-bases
   - script: BASE=debian DIR=debian GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-bases push-bases
   - stage: go1.11.3-builds-alpine-pubsub
