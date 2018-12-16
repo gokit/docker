@@ -2,7 +2,7 @@
 set -eux;
 env GOLANG_VERSION=$VERSION;
 
-apk update && apk add --no-cache --virtual .build-deps \
+apk update && apk add --no-cache make bash wget curl ca-certificates && apk add --no-cache --virtual .build-deps \
 	musl-dev \
 		gcc \
 		coreutils \

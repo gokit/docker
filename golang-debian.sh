@@ -5,6 +5,7 @@ env GOLANG_VERSION=$VERSION;
 
 apt update && apt install -y \
 	gcc \
+	make bash wget curl ca-certificates\
 	coreutils \
 	openssl \
 	golang build-essential
