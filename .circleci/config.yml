@@ -20,7 +20,6 @@ jobs:
     - run: BASE=alpine DIR=alpine GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-bases push-bases
     - run: BASE=debian DIR=debian GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-bases push-bases
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-golang
-    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-nodejs
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-redis
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-mongodb
@@ -30,7 +29,7 @@ jobs:
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-kafka-plain
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-nats
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-nats-streaming
-    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-golang
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-nodejs
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-redis
@@ -41,7 +40,7 @@ jobs:
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-kafka-plain
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-nats
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-nats-streaming
-    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-golang
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-nodejs
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-redis
@@ -52,7 +51,7 @@ jobs:
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-kafka-plain
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-nats
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-nats-streaming
-    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-golang
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-nodejs
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-redis
@@ -63,7 +62,7 @@ jobs:
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-kafka-plain
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-nats
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-nats-streaming
-    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-golang
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-nodejs
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-redis
@@ -74,7 +73,7 @@ jobs:
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-kafka-plain
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-nats
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-nats-streaming
-    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-golang
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-nodejs
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-redis
@@ -85,7 +84,7 @@ jobs:
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-kafka-plain
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-nats
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-nats-streaming
-    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-golang
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-nodejs
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-redis
@@ -96,7 +95,7 @@ jobs:
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-kafka-plain
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-nats
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-nats-streaming
-    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-golang
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-nodejs
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-redis
@@ -107,7 +106,7 @@ jobs:
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-kafka-plain
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-nats
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-nats-streaming
-    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-golang
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-nodejs
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-redis
@@ -118,7 +117,7 @@ jobs:
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-kafka-plain
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-nats
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-nats-streaming
-    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-golang
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-nodejs
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-redis
@@ -129,7 +128,7 @@ jobs:
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-kafka-plain
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-nats
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-nats-streaming
-    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-golang
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-nodejs
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-redis
@@ -140,7 +139,7 @@ jobs:
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-kafka-plain
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-nats
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-nats-streaming
-    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-golang
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-nodejs
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-redis
@@ -151,3 +150,4 @@ jobs:
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-kafka-plain
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-nats
     - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-nats-streaming
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 COMPONENTS=pubsub-emulator make build-base build-gcloud
