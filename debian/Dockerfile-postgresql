@@ -48,13 +48,13 @@ ENV LANG en_US.utf8
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends libnss-wrapper; \
-	apt-get purge -y --auto-remove ca-certificates wget; \
+#	apt-get purge -y --auto-remove ca-certificates wget; \
 	rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /docker-entrypoint-initdb.d
 
 RUN set -ex; \
-	wget -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
+	wget -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | apt-key add -
 
 ENV PG_MAJOR 11
 ENV PG_VERSION 11.1-1.pgdg90+1
