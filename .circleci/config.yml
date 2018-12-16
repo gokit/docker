@@ -10,6 +10,7 @@ jobs:
     working_directory: /go/src/github.com/gokit/docker
     steps:
     - checkout
+    - setup_remote_docker
     - run: BASE=debian DIR=debian GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-node-base push-node-base
     - run: BASE=alpine DIR=alpine GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-node-base push-node-base
     - run: BASE=debian DIR=debian GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-postgre-base push-postgre-base
