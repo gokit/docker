@@ -7,6 +7,7 @@ jobs:
     docker:
     # specify the version
     - image: circleci/golang:1.11.0
+    parallelism: 4
     working_directory: /go/src/github.com/gokit/docker
     steps:
     - checkout
@@ -18,8 +19,8 @@ jobs:
     - run: BASE=alpine DIR=alpine GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-postgre-base push-postgre-base
     - run: BASE=alpine DIR=alpine GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-bases push-bases
     - run: BASE=debian DIR=debian GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-bases push-bases
-    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-golang
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 COMPONENTS=pubsub-emulator make build-base build-gcloud
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-nodejs
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-redis
     - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-mongodb
