@@ -1,4 +1,4 @@
-FROM influx6/kafka-rdkafka-alpine-base:0.1
+FROM influx6/kafka-samsara-debian-base:0.1
 
 # set up nsswitch.conf for Go's "netgo" implementation
 # - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
@@ -6,7 +6,7 @@ FROM influx6/kafka-rdkafka-alpine-base:0.1
 
 ARG VERSION=1.11.2
 
-ADD golang-alpine.sh /scripts/golang-setup.sh
+ADD golang-debian.sh /scripts/golang-setup.sh
 RUN chmod +x /scripts/golang-setup.sh && /scripts/golang-setup.sh
 
 ENV GOPATH /go

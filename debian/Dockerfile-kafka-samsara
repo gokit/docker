@@ -10,6 +10,6 @@ RUN rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
 ADD kafka-*.sh /scripts/
 
-RUN set -ex &&  sh /scripts/kafka-librdkafka.sh 0.11.6
 RUN set -ex &&  sh /scripts/kafka-setup.sh
+
 
