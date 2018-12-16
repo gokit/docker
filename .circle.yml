@@ -1,0 +1,150 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
+jobs:
+  build:
+    docker:
+    # specify the version
+    - image: circleci/golang:1.11.0
+    working_directory: /go/src/github.com/gokit/docker
+    steps:
+    - checkout
+    - run: BASE=debian DIR=debian GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-node-base push-node-base
+    - run: BASE=alpine DIR=alpine GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-node-base push-node-base
+    - run: BASE=debian DIR=debian GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-postgre-base push-postgre-base
+    - run: BASE=alpine DIR=alpine GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-postgre-base push-postgre-base
+    - run: BASE=alpine DIR=alpine GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-bases push-bases
+    - run: BASE=debian DIR=debian GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-bases push-bases
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-golang
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-nodejs
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-redis
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-mongodb
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-mariadb
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-postgres
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-kafka-rdkafka
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-kafka-plain
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-nats
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-nats-streaming
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-golang
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-nodejs
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-redis
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-mongodb
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-mariadb
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-postgres
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-kafka-rdkafka
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-kafka-plain
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-nats
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-nats-streaming
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-golang
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-nodejs
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-redis
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-mongodb
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-mariadb
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-postgres
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-kafka-rdkafka
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-kafka-plain
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-nats
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-nats-streaming
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-golang
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-nodejs
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-redis
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-mongodb
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-mariadb
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-postgres
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-kafka-rdkafka
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-kafka-plain
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-nats
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-nats-streaming
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-golang
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-nodejs
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-redis
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-mongodb
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-mariadb
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-postgres
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-kafka-rdkafka
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-kafka-plain
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-nats
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-nats-streaming
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-golang
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-nodejs
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-redis
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-mongodb
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-mariadb
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-postgres
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-kafka-rdkafka
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-kafka-plain
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-nats
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-nats-streaming
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-golang
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-nodejs
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-redis
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-mongodb
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-mariadb
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-postgres
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-kafka-rdkafka
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-kafka-plain
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-nats
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-nats-streaming
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-golang
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-nodejs
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-redis
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-mongodb
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-mariadb
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-postgres
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-kafka-rdkafka
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-kafka-plain
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-nats
+    - run: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-nats-streaming
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-golang
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-nodejs
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-redis
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-mongodb
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-mariadb
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-postgres
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-kafka-rdkafka
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-kafka-plain
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-nats
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-nats-streaming
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-golang
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-nodejs
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-redis
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-mongodb
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-mariadb
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-postgres
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-kafka-rdkafka
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-kafka-plain
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-nats
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-nats-streaming
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-golang
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-nodejs
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-redis
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-mongodb
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-mariadb
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-postgres
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-kafka-rdkafka
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-kafka-plain
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-nats
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-nats-streaming
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 COMPONENTS=pubsub-emulator make build-base build-gcloud
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-golang
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-nodejs
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-redis
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-mongodb
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-mariadb
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-postgres
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-kafka-rdkafka
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-kafka-plain
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-nats
+    - run: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-nats-streaming
