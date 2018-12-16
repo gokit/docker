@@ -11,7 +11,7 @@ define COMPONENT_DOCKER_FORMAT
 FROM #FROM\nARG component\nRUN set -xe && gcloud components install $$component && gcloud components update\n
 endef
 
-build: build-base build-golang build-gcloud build-redis build-kafka-samsara build-kafka-rdkafka build-mongodb build-mariadb build-nodejs build-nats build-nats-streaming build-postgres
+build: build-base build-golang build-gcloud build-redis build-kafka-plain build-kafka-rdkafka build-mongodb build-mariadb build-nodejs build-nats build-nats-streaming build-postgres
 
 build-base:
 ifeq ('$(BUILD_BASE)', 'true')
@@ -37,8 +37,8 @@ build-bases:
 	docker tag nats-streaming-$(BASE)-base $(DUSER)/nats-streaming-$(BASE)-base:$(VERSION)
 	docker build -t google-gcloud-$(BASE)-base -f $(DIR)/Dockerfile-gcloud .
 	docker tag google-gcloud-$(BASE)-base $(DUSER)/google-gcloud-$(BASE)-base:$(VERSION)
-	docker build -t kafka-samsara-$(BASE)-base -f $(DIR)/Dockerfile-kafka-samsara .
-	docker tag kafka-samsara-$(BASE)-base $(DUSER)/kafka-samsara-$(BASE)-base:$(VERSION)
+	docker build -t kafka-plain-$(BASE)-base -f $(DIR)/Dockerfile-kafka-plain .
+	docker tag kafka-plain-$(BASE)-base $(DUSER)/kafka-plain-$(BASE)-base:$(VERSION)
 	docker build -t kafka-rdkafka-$(BASE)-base -f $(DIR)/Dockerfile-kafka-rdkafka .
 	docker tag kafka-rdkafka-$(BASE)-base $(DUSER)/kafka-rdkafka-$(BASE)-base:$(VERSION)
 
@@ -64,7 +64,7 @@ push-bases:
 	docker push $(DUSER)/nats-$(BASE)-base:$(VERSION)
 	docker push $(DUSER)/nats-streaming-$(BASE)-base:$(VERSION)
 	docker push $(DUSER)/google-gcloud-$(BASE)-base:$(VERSION)
-	docker push $(DUSER)/kafka-samsara-$(BASE)-base:$(VERSION)
+	docker push $(DUSER)/kafka-plain-$(BASE)-base:$(VERSION)
 	docker push $(DUSER)/kafka-rdkafka-$(BASE)-base:$(VERSION)
 
 build-golang:
@@ -138,18 +138,18 @@ endif
 	docker push $(DUSER)/redis-$(BASE)-base:$(VERSION)
 	$(foreach version, $(GOVERSION), docker push $(DUSER)/redis-golang-$(version)-$(BASE)-base;)
 	
-build-kafka-samsara:
+build-kafka-plain:
 	# kafka
 ifeq ('$(BUILD_BASE)', 'true')
-	docker build -t kafka-samsara-$(BASE)-base -f $(DIR)/Dockerfile-kafka-samsara .
-	docker tag kafka-samsara-$(BASE)-base $(DUSER)/kafka-samsara-$(BASE)-base:$(VERSION)
+	docker build -t kafka-plain-$(BASE)-base -f $(DIR)/Dockerfile-kafka-plain .
+	docker tag kafka-plain-$(BASE)-base $(DUSER)/kafka-plain-$(BASE)-base:$(VERSION)
 endif
 	# golan kafka
-	$(foreach version, $(GOVERSION), docker build --build-arg VERSION=$(version) -t kafka-samsara-golang-$(version)-$(BASE)-base -f $(DIR)/Dockerfile-kafka-samsara-golang .;)
-	$(foreach version, $(GOVERSION), docker tag kafka-samsara-golang-$(version)-$(BASE)-base $(DUSER)/kafka-samsara-golang-$(version)-$(BASE)-base:$(VERSION);)
+	$(foreach version, $(GOVERSION), docker build --build-arg VERSION=$(version) -t kafka-plain-golang-$(version)-$(BASE)-base -f $(DIR)/Dockerfile-kafka-plain-golang .;)
+	$(foreach version, $(GOVERSION), docker tag kafka-plain-golang-$(version)-$(BASE)-base $(DUSER)/kafka-plain-golang-$(version)-$(BASE)-base:$(VERSION);)
 	# push
-	docker push $(DUSER)/kafka-samsara-$(BASE)-base:$(VERSION)
-	$(foreach version, $(GOVERSION), docker push $(DUSER)/kafka-samsara-golang-$(version)-$(BASE)-base;)
+	docker push $(DUSER)/kafka-plain-$(BASE)-base:$(VERSION)
+	$(foreach version, $(GOVERSION), docker push $(DUSER)/kafka-plain-golang-$(version)-$(BASE)-base;)
 
 build-kafka-rdkafka:
 	# kafka

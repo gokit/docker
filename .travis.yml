@@ -55,7 +55,7 @@ jobs:
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-mariadb
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-postgres
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-kafka-rdkafka
-  - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-kafka-samsara
+  - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-kafka-plain
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-nats
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.3 make build-base build-nats-streaming
   - stage: go1.11.3-builds-debian-pubsub
@@ -67,7 +67,7 @@ jobs:
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-mariadb
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-postgres
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-kafka-rdkafka
-  - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-kafka-samsara
+  - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-kafka-plain
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-nats
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.3 make build-base build-nats-streaming
   - stage: go1.11.4-builds-alpine-pubsub
@@ -79,7 +79,7 @@ jobs:
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-mariadb
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-postgres
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-kafka-rdkafka
-  - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-kafka-samsara
+  - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-kafka-plain
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-nats
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-base build-nats-streaming
   - stage: go1.11.4-builds-debian-pubsub
@@ -91,7 +91,7 @@ jobs:
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-mariadb
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-postgres
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-kafka-rdkafka
-  - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-kafka-samsara
+  - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-kafka-plain
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-nats
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.11.4 make build-base build-nats-streaming
   - stage: go1.10.7-builds-alpine-pubsub
@@ -103,7 +103,7 @@ jobs:
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-mariadb
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-postgres
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-kafka-rdkafka
-  - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-kafka-samsara
+  - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-kafka-plain
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-nats
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.10.7 make build-base build-nats-streaming
   - stage: go1.9.7-builds-alpine-pubsub
@@ -115,7 +115,7 @@ jobs:
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-mariadb
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-postgres
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-kafka-rdkafka
-  - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-kafka-samsara
+  - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-kafka-plain
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-nats
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.9.7 make build-base build-nats-streaming
   - stage: go1.8.7-builds-alpine-pubsub
@@ -127,7 +127,7 @@ jobs:
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-mariadb
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-postgres
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-kafka-rdkafka
-  - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-kafka-samsara
+  - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-kafka-plain
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-nats
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.8.7 make build-base build-nats-streaming
   - stage: go1.7.6-builds-alpine-pubsub
@@ -139,7 +139,7 @@ jobs:
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-mariadb
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-postgres
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-kafka-rdkafka
-  - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-kafka-samsara
+  - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-kafka-plain
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-nats
   - script: BUILD_BASE=false BASE=alpine DIR=alpine GOVERSION=1.7.6 make build-base build-nats-streaming
   - stage: go1.10.7-builds-debian-pubsub
@@ -151,7 +151,7 @@ jobs:
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-mariadb
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-postgres
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-kafka-rdkafka
-  - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-kafka-samsara
+  - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-kafka-plain
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-nats
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.10.7 make build-base build-nats-streaming
   - stage: go1.9.7-builds-debian-pubsub
@@ -163,7 +163,7 @@ jobs:
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-mariadb
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-postgres
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-kafka-rdkafka
-  - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-kafka-samsara
+  - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-kafka-plain
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-nats
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.9.7 make build-base build-nats-streaming
   - stage: go1.8.7-builds-debian-pubsub
@@ -175,7 +175,7 @@ jobs:
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-mariadb
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-postgres
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-kafka-rdkafka
-  - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-kafka-samsara
+  - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-kafka-plain
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-nats
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.8.7 make build-base build-nats-streaming
   - stage: go1.7.6-builds-debian-pubsub
@@ -187,7 +187,7 @@ jobs:
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-mariadb
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-postgres
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-kafka-rdkafka
-  - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-kafka-samsara
+  - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-kafka-plain
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-nats
   - script: BUILD_BASE=false BASE=debian DIR=debian GOVERSION=1.7.6 make build-base build-nats-streaming
 
