@@ -6,11 +6,13 @@ ENV  GLIBC_REPO=https://github.com/sgerrand/alpine-pkg-glibc \
          LANG=C.UTF-8
 
 RUN mkdir /scripts && \
-	apk --no-cache add make librdkafka musl-dev gcc
+	apk --no-cache add musl-dev libressl; \
+	apk --no-cache  --virtual .build-deps add make librdkafka gcc python cyrus-sasl-dev lz4-dev build-base
 
 ADD kafka-*.sh /scripts/
 
 RUN set -ex && sh /scripts/kafka-librdkafka.sh 0.11.6
 RUN set -ex && sh /scripts/kafka-setup.sh
+RUN apk del .build-deps
 
 

@@ -4,9 +4,9 @@ ARG CLOUD_SDK_VERSION=227.0.0
 ENV CLOUD_SDK_VERSION=$CLOUD_SDK_VERSION
 
 ENV PATH /google-cloud-sdk/bin:$PATH
-RUN apt install -y \
+RUN apt update && apt install -y \
    python \
-   py-crcmod \
+   python-crcmod  \
    openssh-client \
    gnupg \
     && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
