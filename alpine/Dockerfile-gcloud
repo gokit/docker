@@ -5,7 +5,7 @@ ENV CLOUD_SDK_VERSION=$CLOUD_SDK_VERSION
 ENV PUBSUB_EMULATOR_HOST 0.0.0.0:8538
 
 ENV PATH /google-cloud-sdk/bin:$PATH
-RUN apk --no-cache add \
+RUN apk --update --no-cache add \
    python \
    py-crcmod \
    musl-dev \
@@ -23,6 +23,7 @@ RUN apk --no-cache add \
 RUN mkdir -p /scripts
 ADD google-pubsub-run.sh /scripts/google-pubsub-run.sh
 RUN chmod -R +x /scripts
+RUN rm -f /var/cache/apk/* /var/lib/apk/*
 
 EXPOSE 8538
 
