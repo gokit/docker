@@ -3,7 +3,9 @@ MAINTAINER Alexander Ewetumo <trinoxf@gmail.com>
 
 RUN mkdir /scripts
 ADD nats-setup.sh /scripts/nats-setup.sh
+ADD nats-run.sh /scripts/nats-run.sh
 ADD gnats.conf /scripts/gnats.conf
+RUN chmod -R +x /scripts
 
 # Expose client, management, and cluster ports
 EXPOSE 4222 8222 6222

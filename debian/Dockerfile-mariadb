@@ -150,6 +150,7 @@ VOLUME /data/db/mysql
 # Copy the mysql startup so we can run up the server.
 COPY mariadb/bootsql /bin/bootsql
 RUN chmod +x /bin/bootsql
+RUN rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
 # Add default port for mysql.
 ENV MYSQL_PORT 3306

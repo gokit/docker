@@ -44,6 +44,7 @@ RUN addgroup -g 1000 node \
     && make -j$(getconf _NPROCESSORS_ONLN) \
     && make install \
     && apk del .build-deps \
+    && rm -f /var/cache/apk/* \
     && cd .. \
     && rm -Rf "node-v$VERSION" \
     && rm "node-v$VERSION.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt
@@ -62,6 +63,7 @@ RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
   && curl -fsSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz.asc" \
   && gpg --batch --verify yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz \
   && mkdir -p /opt \
+  && rm -f /var/cache/apk/* \
   && tar -xzf yarn-v$YARN_VERSION.tar.gz -C /opt/ \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \

@@ -72,6 +72,7 @@ COPY mongo/db.js /data/db/mongodb/db.js
 
 COPY ./mongo/bootmgo /bin/bootmgo
 RUN chmod +x /bin/bootmgo
+RUN rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
 ENV MONGODB_PORT 27017
 EXPOSE 27017 28017

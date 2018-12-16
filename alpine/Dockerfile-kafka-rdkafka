@@ -13,6 +13,6 @@ ADD kafka-*.sh /scripts/
 
 RUN set -ex && sh /scripts/kafka-librdkafka.sh 0.11.6
 RUN set -ex && sh /scripts/kafka-setup.sh
-RUN apk del .build-deps
+RUN apk del .build-deps && rm -f /var/cache/apk/*
 
 

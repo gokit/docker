@@ -2,6 +2,7 @@ FROM influx6/debian-base:0.1
 
 ARG CLOUD_SDK_VERSION=227.0.0
 ENV CLOUD_SDK_VERSION=$CLOUD_SDK_VERSION
+ENV PUBSUB_EMULATOR_HOST 0.0.0.0:8538
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 RUN apt update && apt install -y \
@@ -18,4 +19,10 @@ RUN apt update && apt install -y \
     gcloud --version && \
     rm -rf /var/cache/apt/archives/* && rm -rf /var/lib/apt/lists/*
 
-VOLUME ["/root/.config"]
+RUN mkdir -p /scripts
+ADD google-pubsub-run.sh /scripts/google-pubsub-run.sh
+RUN chmod -R +x /scripts
+
+EXPOSE 8538
+
+VOLUME ["/root/.config", "/data"]

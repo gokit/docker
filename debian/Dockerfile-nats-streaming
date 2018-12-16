@@ -2,8 +2,10 @@ FROM influx6/debian-base:0.1
 MAINTAINER Alexander Ewetumo <trinoxf@gmail.com>
 
 RUN mkdir /scripts
+ADD nats-streaming-run.sh /scripts/nats-streaming-run.sh
 ADD nats-streaming-setup.sh /scripts/nats-streaming-setup.sh
 ADD gnats.conf /scripts/gnats.conf
+RUN chmod -R +x /scripts
 
 # Expose client, management, and cluster ports
 EXPOSE 4222 8222 6222

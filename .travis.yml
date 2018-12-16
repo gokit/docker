@@ -42,7 +42,6 @@ jobs:
   - stage: go-images-foundation
     script: BASE=debian DIR=debian GOVERSION=1.11.4 make build-node-base push-node-base
   - script: BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-node-base push-node-base
-  - script: BASE=alpine DIR=alpine GOVERSION=1.11.4 make build-node-base push-node-base
   - script: BASE=debian DIR=debian GOVERSION=1.11.4  make build-mongodb-base push-mongodb-base
   - script: BASE=alpine DIR=alpine GOVERSION=1.11.4  make build-mongodb-base push-mongodb-base
   - script: BASE=debian DIR=debian GOVERSION=1.11.4  make build-mariadb-base push-mariadb-base

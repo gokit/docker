@@ -6,6 +6,7 @@ RUN groupadd -r redis && useradd -r -g redis redis
 ENV REDIS_VERSION 5.0.2
 ENV REDIS_DOWNLOAD_URL http://download.redis.io/releases/redis-5.0.2.tar.gz
 ENV REDIS_DOWNLOAD_SHA 937dde6164001c083e87316aa20dad2f8542af089dfcb1cbb64f9c8300cd00ed
+ENV REDIS_PORT 6379
 
 # for redis-sentinel see: http://redis.io/topics/sentinel
 RUN set -ex; \
@@ -51,5 +52,9 @@ RUN set -ex; \
 
 RUN mkdir /data && chown redis:redis /data
 VOLUME /data
+RUN rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
+RUN mkdir -p /scripts
+ADD redis-run.sh /scripts/redis-run.sh
+RUN chmod -R +x /scripts
 
 EXPOSE 6379

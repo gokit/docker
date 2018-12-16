@@ -8,6 +8,7 @@ ARG VERSION=1.11.2
 
 ADD golang-debian.sh /scripts/golang-setup.sh
 RUN chmod +x /scripts/golang-setup.sh && /scripts/golang-setup.sh
+RUN chmod -R +x /scripts
 
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
