@@ -80,9 +80,8 @@ build-mongodb-base:
 	docker build -t mongodb-$(BASE)-base -f $(DIR)/Dockerfile-mongodb .
 	docker tag mongodb-$(BASE)-base $(DUSER)/mongodb-$(BASE)-base:$(VERSION)
 
-push-mmongodb-base:
+push-mongodb-base:
 	docker push $(DUSER)/mongodb-$(BASE)-base:$(VERSION)
-
 
 build-golang:
 	$(foreach version, $(GOVERSION), docker build --build-arg VERSION=$(version) -t golang-$(version)-$(BASE)-base -f $(DIR)/Dockerfile-golang-base .;)
