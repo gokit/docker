@@ -6,3 +6,4 @@ unzip gnatsd.zip
 mv gnatsd-v1.3.0-linux-amd64/* /gnatsd
 chmod -R +x /gnatsd
 rm -rf gnatsd-v1.3.0-linux-amd64
+rm -rf gnatsd.zip

@@ -6,4 +6,5 @@ unzip nats-streaming.zip
 mv nats-streaming-server-v0.11.2-linux-amd64/* /nats-streaming
 chmod -R +x /nats-streaming
 rm -rf nats-streaming-server-v0.11.2-linux-amd64
+rm -rf nats-streaming.zip
 
