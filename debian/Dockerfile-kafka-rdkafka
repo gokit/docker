@@ -9,6 +9,7 @@ RUN mkdir /scripts && \
 RUN rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
 ADD kafka-*.sh /scripts/
+ADD kafka/server.properties /scripts/server.properties
 
 RUN set -ex &&  sh /scripts/kafka-librdkafka.sh 0.11.6
 RUN set -ex &&  sh /scripts/kafka-setup.sh

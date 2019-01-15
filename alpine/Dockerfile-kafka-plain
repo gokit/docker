@@ -10,6 +10,7 @@ RUN mkdir /scripts && \
 	apk --no-cache  --virtual .build-deps add make librdkafka gcc python cyrus-sasl-dev lz4-dev build-base
 
 ADD kafka-*.sh /scripts/
+ADD kafka/server.properties /scripts/server.properties
 
 RUN set -ex && sh /scripts/kafka-setup.sh
 RUN apk del .build-deps && rm -f /var/cache/apk/*
