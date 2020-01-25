@@ -1,0 +1,102 @@
+FROM influx6/alpine-base:0.1
+MAINTAINER Ewetumo Alexander <trinoxf@gmail.com>
+
+# PORT is default port for apache
+ENV PORT 80
+
+# Persistent runtime dependencies
+ARG DEPS="\
+        php7.4 \
+        php7.4-phar \
+        php7.4-bcmath \
+        php7.4-calendar \
+        php7.4-mbstring \
+        php7.4-exif \
+        php7.4-openssl \
+        php7.4-soap \
+        php7.4-ftp \
+        php7.4-zip \
+        php7.4-sysvsem \
+        php7.4-sysvshm \
+        php7.4-sysvmsg \
+        php7.4-shmop \
+        php7.4-sockets \
+        php7.4-zlib \
+        php7.4-bz2 \
+        php7.4-curl \
+        php7.4-simplexml \
+        php7.4-xml \
+        php7.4-opcache \
+        php7.4-dom \
+        php7.4-xmlreader \
+        php7.4-xmlwriter \
+        php7.4-tokenizer \
+        php7.4-ctype \
+        php7.4-session \
+        php7.4-fileinfo \
+        php7.4-iconv \
+        php7.4-json \
+        php7.4-posix \
+        php7.4-apache2 \
+        curl \
+        libsodium \
+        ca-certificates \
+        runit \
+        apache2 \
+        apache2-utils \
+        composer \
+"
+
+ARG APP_ENV=prod
+
+# PHP_INI_DIR to be symmetrical with official php docker image
+ENV PHP_INI_DIR /etc/php/7.4
+
+ENV APACHE_LOG_DIR /sites/logs
+
+# When using Composer, disable the warning about running commands as root/super user
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+# PHP.earth Alpine repository for better developer experience
+ADD https://repos.php.earth/alpine/phpearth.rsa.pub /etc/apk/keys/phpearth.rsa.pub
+
+COPY tags/apache /
+COPY php/sites /sites
+COPY php/etc/apache2 /etc/apache2
+COPY php/apache-start /usr/local/bin
+
+RUN set -x \
+    && addgroup apache \
+    && mkdir -p /sites/logs \
+    && mkdir -p /sites/app/public \
+    && mkdir -p /etc/apache2/sites-enabled \
+    && mkdir -p /etc/apache2/conf-enabled \
+    && ln -s /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf \
+    && ln -s /etc/apache2/conf-available/server-cgi-bin.conf /etc/apache2/conf-enabled/server-cgi-bin.conf \
+    && adduser -S -G apache apache \
+    && echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories \
+    && apk add --no-cache \
+          $DEPS \
+    # && apk add --no-cache \
+        --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+        --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+          $DEPS \
+    && mkdir -p /run/apache2 \
+    && chown -R apache:apache /sites/app \
+    && ln -sf /var/www/modules /etc/apache2/modules \
+    && ln -sf /dev/stdout /var/log/apache2/access.log \
+    && ln -sf /dev/stderr /var/log/apache2/error.log \
+    && rm /etc/apache2/httpd.conf.apk-new
+
+RUN if [ ${APP_ENV} = "dev" ]; then \
+        apk add --no-cache git openssh \
+        && composer global require hirak/prestissimo \
+        && composer global require paragonie/random_compat \
+        && composer global require mikey179/vfsStream \
+        && composer global require phpunit/phpunit; \
+    fi
+
+
+EXPOSE 80
+
+CMD ["/sbin/runit-wrapper"]

@@ -25,6 +25,8 @@ endif
 build-bases:
 	docker build -t $(BASE)-base -f $(DIR)/Dockerfile-base .
 	docker tag $(BASE)-base $(DUSER)/$(BASE)-base:$(VERSION)
+	docker build -t php-$(BASE)-base -f $(DIR)/Dockerfile-php .
+	docker tag php-$(BASE)-base $(DUSER)/php-$(BASE)-base:$(VERSION)
 	docker build -t redis-$(BASE)-base -f $(DIR)/Dockerfile-redis .
 	docker tag redis-$(BASE)-base $(DUSER)/redis-$(BASE)-base:$(VERSION)
 	docker build -t nats-$(BASE)-base -f $(DIR)/Dockerfile-nats .
@@ -35,6 +37,7 @@ build-bases:
 	docker tag google-gcloud-$(BASE)-base $(DUSER)/google-gcloud-$(BASE)-base:$(VERSION)
 
 push-bases:
+	docker push $(DUSER)/php-$(BASE)-base:$(VERSION)
 	docker push $(DUSER)/google-gcloud-$(BASE)-base:$(VERSION)
 	docker push $(DUSER)/redis-$(BASE)-base:$(VERSION)
 	docker push $(DUSER)/nats-$(BASE)-base:$(VERSION)
@@ -55,6 +58,15 @@ push-kafka-plain-base:
 push-kafka-rdkafka-base:
 	docker push $(DUSER)/kafka-rdkafka-$(BASE)-base:$(VERSION)
 
+build-php-base:
+	docker build -t php-$(BASE)-base -f $(DIR)/Dockerfile-php .
+	docker build --build-arg APP_ENV='dev' -t php-$(BASE)-dev-base -f $(DIR)/Dockerfile-php .
+	docker tag php-$(BASE)-base $(DUSER)/php-$(BASE)-base:$(VERSION)
+	docker tag php-$(BASE)-dev-base $(DUSER)/php-$(BASE)-dev-base:$(VERSION)
+
+push-php-base:
+	docker push $(DUSER)/php-$(BASE)-base:$(VERSION)
+
 build-node-base:
 	docker build -t nodejs-$(BASE)-base -f $(DIR)/Dockerfile-nodejs .
 	docker tag nodejs-$(BASE)-base $(DUSER)/nodejs-$(BASE)-base:$(VERSION)
@@ -68,7 +80,7 @@ build-postgre-base:
 
 push-postgre-base:
 	docker push $(DUSER)/postgresql-$(BASE)-base:$(VERSION)
-	
+
 build-mariadb-base:
 	docker build -t mariadb-$(BASE)-base -f $(DIR)/Dockerfile-mariadb .
 	docker tag mariadb-$(BASE)-base $(DUSER)/mariadb-$(BASE)-base:$(VERSION)
@@ -153,7 +165,7 @@ endif
 	# push
 	docker push $(DUSER)/redis-$(BASE)-base:$(VERSION)
 	$(foreach version, $(GOVERSION), docker push $(DUSER)/redis-golang-$(version)-$(BASE)-base;)
-	
+
 build-kafka-plain:
 	# kafka
 ifeq ('$(BUILD_BASE)', 'true')
