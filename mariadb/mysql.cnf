@@ -1,5 +1,5 @@
 [mysqld]
 user = root
 port = 3306
-datadir = /mnt/db/mysql
-log-bin = /mnt/db/mysql/logs/mysql-logs.bin
+datadir = /data/db/mysql
+log-bin = /data/db/mysql/logs/mysql-logs.bin
