@@ -11,9 +11,13 @@ define COMPONENT_DOCKER_FORMAT
 FROM #FROM\nARG component\nRUN set -xe && gcloud components install $$component && gcloud components update\n
 endef
 
-build: build-base build-golang build-gcloud build-redis build-kafka-plain build-kafka-rdkafka build-mongodb build-mariadb build-nodejs build-nats build-nats-streaming build-postgres
+build: setup-base build-php-base build-golang build-gcloud build-redis build-kafka-plain build-kafka-rdkafka build-mongodb build-mariadb build-nodejs build-nats build-nats-streaming build-postgres build-php-base build-php-mysql-base
 
-build-base:
+build-base: setup-base build-bases
+
+build-php: setup-base build-php-base build-php-mysql-base push-php-base push-php-mysql-base
+
+setup-base:
 ifeq ('$(BUILD_BASE)', 'true')
 	docker build -t $(BASE)-base -f $(DIR)/Dockerfile-base .
 	docker tag $(BASE)-base $(DUSER)/$(BASE)-base:$(VERSION)
@@ -22,11 +26,7 @@ else
 	docker pull $(DUSER)/$(BASE)-base:$(VERSION)
 endif
 
-build-bases:
-	docker build -t $(BASE)-base -f $(DIR)/Dockerfile-base .
-	docker tag $(BASE)-base $(DUSER)/$(BASE)-base:$(VERSION)
-	docker build -t php-$(BASE)-base -f $(DIR)/Dockerfile-php .
-	docker tag php-$(BASE)-base $(DUSER)/php-$(BASE)-base:$(VERSION)
+build-bases: setup-base
 	docker build -t redis-$(BASE)-base -f $(DIR)/Dockerfile-redis .
 	docker tag redis-$(BASE)-base $(DUSER)/redis-$(BASE)-base:$(VERSION)
 	docker build -t nats-$(BASE)-base -f $(DIR)/Dockerfile-nats .
@@ -35,6 +35,7 @@ build-bases:
 	docker tag nats-streaming-$(BASE)-base $(DUSER)/nats-streaming-$(BASE)-base:$(VERSION)
 	docker build -t google-gcloud-$(BASE)-base -f $(DIR)/Dockerfile-gcloud .
 	docker tag google-gcloud-$(BASE)-base $(DUSER)/google-gcloud-$(BASE)-base:$(VERSION)
+
 
 push-bases:
 	docker push $(DUSER)/php-$(BASE)-base:$(VERSION)
@@ -63,6 +64,13 @@ build-php-base:
 	docker build --build-arg APP_ENV='dev' -t php-$(BASE)-dev-base -f $(DIR)/Dockerfile-php .
 	docker tag php-$(BASE)-base $(DUSER)/php-$(BASE)-base:$(VERSION)
 	docker tag php-$(BASE)-dev-base $(DUSER)/php-$(BASE)-dev-base:$(VERSION)
+
+build-php-mysql-base:
+	docker build -t php-mysql-$(BASE)-base -f $(DIR)/Dockerfile-php-mysql .
+	docker tag php-mysql-$(BASE)-base $(DUSER)/php-mysql-$(BASE)-base:$(VERSION)
+
+push-php-mysql-base:
+	docker push $(DUSER)/php-mysql-$(BASE)-base:$(VERSION)
 
 push-php-base:
 	docker push $(DUSER)/php-$(BASE)-base:$(VERSION)
