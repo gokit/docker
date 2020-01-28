@@ -1,5 +1,9 @@
 [mysqld]
-user = root
-port = 3306
-datadir = /data/db/mysql
-log-bin = /data/db/mysql/logs/mysql-logs.bin
+user            = root
+port            = 3306
+bind-address    = 0.0.0.0
+basedir         = /usr
+datadir         = /data
+log-bin         = /data/logs/mysql-logs.bin
+pid-file        = /var/run/mysqld/mysqld.pid
+socket          = /var/run/mysqld/mysqld.sock
