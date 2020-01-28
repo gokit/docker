@@ -3,7 +3,7 @@ MAINTAINER Ewetumo Alexander <trinoxf@gmail.com>
 
 RUN \    
     # Add group and user for mysql
-    apk update
+    apk update \
     && addgroup -S -g 500 mysql \
     && adduser -S -D -H -u 500 -G mysql -g "MySQL" mysql \
     # Create needed directories
@@ -16,7 +16,7 @@ RUN \
     # Set permissions
     && chown -R mysql:mysql /var/lib/mysql \
     && chown -R mysql:mysql /run/mysqld \
-    && chmod -R 755 /opt/mariadb
+    && chmod -R 755 /opt/mariadb \
     && export CPU=`cat /proc/cpuinfo | grep -c processor` \
     # Add testing repo
     # && echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories \
