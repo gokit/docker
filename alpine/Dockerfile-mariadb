@@ -62,3 +62,5 @@ ENV MYSQL_PORT 3306
 
 # Expose port for mysql usage.
 EXPOSE 3306
+
+CMD [/bin/bootsql]
