@@ -40,7 +40,15 @@ ARG DEPS="\
         php$VERSION-json \
         php$VERSION-posix \
         php$VERSION-apache2 \
+        php$VERSION-fpm \
+        php$VERSION-pdo \
+        php$VERSION-pdo_dblib \
         php$VERSION-mysqli \
+        php$VERSION-sqlite3 \
+        php$VERSION-pdo_mysql \
+        php$VERSION-pdo_sqlite \
+        php$VERSION-pdo_pgsql \
+        mysql-client \
         curl \
         libsodium \
         ca-certificates \

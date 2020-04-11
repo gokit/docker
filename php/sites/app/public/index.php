@@ -199,7 +199,7 @@
       </div>
 
         <h2>Welcome aboard maity we are ready to run this server into the seas!</h2>
-
+        <?php phpinfo(); exit(); ?>
       </div>
     </div>
     <div class="validator">
