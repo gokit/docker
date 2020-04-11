@@ -1,4 +1,4 @@
-VERSION ?= 0.2.1
+VERSION ?= 0.2.2
 DUSER ?= influx6
 BASE ?= alpine
 DIR ?= alpine
