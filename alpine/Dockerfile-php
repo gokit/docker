@@ -52,12 +52,7 @@ ARG RDEPS="\
         libzip-dev \
         oniguruma-dev \
         make \
-        postgresql-dev \
-        openssl-dev \
         freetds-dev \
-        libpng-dev \
-        libssh2-dev \
-        sqlite-dev \
 "
 
 # Persistent runtime dependencies
@@ -89,6 +84,11 @@ ARG DEPS="\
         libltdl \
         libcurl \
         bzip2 \
+        postgresql-dev \
+        openssl-dev \
+        libpng-dev \
+        libssh2-dev \
+        sqlite-dev \
 "
 
 ARG APP_ENV=prod
@@ -132,7 +132,7 @@ RUN set -x \
     && docker-php-ext-install $EXTS \
     && docker-php-ext-enable $EXTS \
     && chown -R "$APACHE_RUN_USER:$APACHE_RUN_GROUP" /var/www \
-    && apk del musl $RDEPS \
+    && apk del $RDEPS \
     && rm -rf /var/lib/apt/lists/* 
 	
 
