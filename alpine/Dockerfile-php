@@ -56,7 +56,6 @@ ARG RDEPS="\
         libpng-dev \
         libssh2-dev \
         sqlite-dev \
-        libstdc++ \
         libzip-dev \
         make \
         bzip2-dev \
@@ -91,6 +90,7 @@ ARG DEPS="\
         postgresql \
         libzip \
         sqlite \
+        libstdc++ \
 "
 
 ARG APP_ENV=prod
