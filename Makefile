@@ -78,6 +78,7 @@ push-php-mysql-base:
 
 push-php-base:
 	docker push $(DUSER)/php-$(BASE)-base:$(VERSION)
+	docker push $(DUSER)/php-$(BASE)-dev-base:$(VERSION)
 
 build-node-base:
 	docker build -t nodejs-$(BASE)-base -f $(DIR)/Dockerfile-nodejs .

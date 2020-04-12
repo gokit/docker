@@ -42,50 +42,53 @@ ARG EXTS="\
         xmlwriter \
 "
 
+ARG RDEPS="\
+        git \
+        icu-dev \
+        bzip2-dev \
+        curl-dev \
+        libmcrypt-dev \
+        libxml2-dev \
+        libzip-dev \
+        oniguruma-dev \
+        make \
+        postgresql-dev \
+        openssl-dev \
+        freetds-dev \
+        libpng-dev \
+        libssh2-dev \
+        sqlite-dev \
+"
+
 # Persistent runtime dependencies
 ARG DEPS="\
         mysql-client \
         curl \
         icu \
-        icu-dev \
+        wget \
         bash \
         vim \
-        wget \
         unzip \
-        make \
+        libmcrypt \
         netcat-openbsd \
-        git \
-        oniguruma-dev \
         msmtp \
-        postgresql-dev \
         openssl \
-        openssl-dev \
         ca-certificates \
         composer \
         freetds \
-        freetds-dev \
         libpng \
-        libpng-dev \
         libssh2 \
-        libssh2-dev \
-        sqlite-dev \
         curl \
         libpng \
         freetype \
         libjpeg-turbo \
         libgcc \
-        libxml2-dev \
-        libzip-dev \
         php-soap \
         libstdc++ \
         icu-libs \
         libltdl \
         libcurl \
-        curl-dev \
         bzip2 \
-        bzip2-dev \
-        libmcrypt \
-        libmcrypt-dev \
 "
 
 ARG APP_ENV=prod
@@ -118,7 +121,7 @@ RUN set -x \
     && ln -s /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf \
     && ln -s /etc/apache2/conf-available/server-cgi-bin.conf /etc/apache2/conf-enabled/server-cgi-bin.conf \
     && apk update \
-    && apk add --no-cache $DEPS \
+    && apk add --no-cache $DEPS $RDEPS \
     && apk add --no-cache apache2-proxy \
     # && sed -i "s/LoadModule mpm_prefork_module modules\/mod_mpm_prefork.so/#LoadModule mpm_prefork_module modules\/mod_mpm_prefork.so/g" /etc/apache2/httpd.conf \
     # && sed -i "s/#LoadModule mpm_event_module modules\/mod_mpm_event.so/LoadModule mpm_event_module modules\/mod_mpm_event.so/g" /etc/apache2/httpd.conf \
@@ -129,6 +132,7 @@ RUN set -x \
     && docker-php-ext-install $EXTS \
     && docker-php-ext-enable $EXTS \
     && chown -R "$APACHE_RUN_USER:$APACHE_RUN_GROUP" /var/www \
+    && apk del musl $RDEPS \
     && rm -rf /var/lib/apt/lists/* 
 	
 
