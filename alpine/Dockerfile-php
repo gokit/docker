@@ -132,7 +132,6 @@ RUN set -x \
     && docker-php-ext-install $EXTS \
     && docker-php-ext-enable $EXTS \
     && chown -R "$APACHE_RUN_USER:$APACHE_RUN_GROUP" /var/www \
-    && apk del $RDEPS \
     && rm -rf /var/lib/apt/lists/* 
 	
 
