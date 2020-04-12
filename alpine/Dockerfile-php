@@ -44,15 +44,22 @@ ARG EXTS="\
 
 ARG RDEPS="\
         git \
+        libgcc \
         icu-dev \
-        bzip2-dev \
         curl-dev \
         libmcrypt-dev \
         libxml2-dev \
-        libzip-dev \
-        oniguruma-dev \
-        make \
         freetds-dev \
+        oniguruma-dev \
+        postgresql-dev \
+        openssl-dev \
+        libpng-dev \
+        libssh2-dev \
+        sqlite-dev \
+        libstdc++ \
+        libzip-dev \
+        make \
+        bzip2-dev \
 "
 
 # Persistent runtime dependencies
@@ -74,21 +81,16 @@ ARG DEPS="\
         libpng \
         libssh2 \
         curl \
-        libpng \
         freetype \
         libjpeg-turbo \
-        libgcc \
         php-soap \
-        libstdc++ \
         icu-libs \
         libltdl \
         libcurl \
         bzip2 \
-        postgresql-dev \
-        openssl-dev \
-        libpng-dev \
-        libssh2-dev \
-        sqlite-dev \
+        postgresql \
+        libzip \
+        sqlite \
 "
 
 ARG APP_ENV=prod
@@ -108,10 +110,11 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 COPY tags/apache /
 COPY php/install-php-extensions /usr/local/bin/install-php-extensions
 COPY php/etc/apache2 /etc/apache2
-COPY php/apache-start /usr/local/bin
+COPY php/apache-start /usr/local/bin/apache-start
 
 RUN set -x \
     && chmod uga+x /usr/local/bin/install-php-extensions \ 
+    && chmod uga+x /usr/local/bin/apache-start \
     && mkdir -p /etc/apache2 \
     && mkdir -p /etc/php/conf.d/ \
     && mkdir -p /var/logs \
@@ -132,8 +135,8 @@ RUN set -x \
     && docker-php-ext-install $EXTS \
     && docker-php-ext-enable $EXTS \
     && chown -R "$APACHE_RUN_USER:$APACHE_RUN_GROUP" /var/www \
-    && rm -rf /var/lib/apt/lists/* 
-	
+    && rm -rf /var/lib/apt/lists/* \
+    && apk del $RDEPS
 
 RUN if [ ${APP_ENV} = "dev" ]; then \
         apk add --no-cache git openssh \
@@ -147,4 +150,4 @@ RUN if [ ${APP_ENV} = "dev" ]; then \
 COPY php/sites /var/www
 EXPOSE 80
 
-CMD ["/sbin/runit-wrapper"]
+CMD ["/usr/local/bin/apache-start"]
