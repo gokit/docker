@@ -1,0 +1,3 @@
+extension=/usr/lib/php/7.4/modules/ctype.so
+extension=/usr/lib/php/7.4/modules/mysqlnd.so
+extension=/usr/lib/php/7.4/modules/mysqli.so

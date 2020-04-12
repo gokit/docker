@@ -59,11 +59,15 @@ push-kafka-plain-base:
 push-kafka-rdkafka-base:
 	docker push $(DUSER)/kafka-rdkafka-$(BASE)-base:$(VERSION)
 
-build-php-base:
+build-php-prod-base:
 	docker build -t php-$(BASE)-base -f $(DIR)/Dockerfile-php .
-	docker build --build-arg APP_ENV='dev' -t php-$(BASE)-dev-base -f $(DIR)/Dockerfile-php .
 	docker tag php-$(BASE)-base $(DUSER)/php-$(BASE)-base:$(VERSION)
+
+build-php-dev-base:
+	docker build --build-arg APP_ENV='dev' -t php-$(BASE)-dev-base -f $(DIR)/Dockerfile-php .
 	docker tag php-$(BASE)-dev-base $(DUSER)/php-$(BASE)-dev-base:$(VERSION)
+
+build-php-base: build-php-prod-base build-php-dev-base
 
 build-php-mysql-base:
 	docker build -t php-mysql-$(BASE)-base -f $(DIR)/Dockerfile-php-mysql .

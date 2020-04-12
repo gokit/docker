@@ -1,113 +1,147 @@
-FROM influx6/alpine-base:0.1
+FROM php:7.4-fpm-alpine3.11
+
 MAINTAINER Ewetumo Alexander <trinoxf@gmail.com>
 
 # PORT is default port for apache
 ENV PORT 80
 
-ARG VERSION=7.4
+# Persistent extensions dependencies
+ARG EXTS="\
+        bcmath \
+        calendar \
+        mbstring \
+        exif \
+        soap \
+        zip \
+        sysvsem \
+        sysvshm \
+        sysvmsg \
+        shmop \
+        sockets \
+        bz2 \
+        curl \
+        simplexml \
+        xml \
+        opcache \
+        tokenizer \
+        ctype \
+        session \
+        fileinfo \
+        iconv \
+        json \
+        posix \
+        gd \
+        mysqli \
+        pdo \
+        pdo_dblib \
+        pdo_mysql \
+        pdo_sqlite \
+        pdo_pgsql \
+        intl \
+        dom \
+        xmlwriter \
+"
 
 # Persistent runtime dependencies
 ARG DEPS="\
-        php$VERSION \
-        php$VERSION-phar \
-        php$VERSION-bcmath \
-        php$VERSION-calendar \
-        php$VERSION-mbstring \
-        php$VERSION-exif \
-        php$VERSION-openssl \
-        php$VERSION-soap \
-        php$VERSION-ftp \
-        php$VERSION-zip \
-        php$VERSION-sysvsem \
-        php$VERSION-sysvshm \
-        php$VERSION-sysvmsg \
-        php$VERSION-shmop \
-        php$VERSION-sockets \
-        php$VERSION-zlib \
-        php$VERSION-bz2 \
-        php$VERSION-curl \
-        php$VERSION-simplexml \
-        php$VERSION-xml \
-        php$VERSION-opcache \
-        php$VERSION-dom \
-        php$VERSION-xmlreader \
-        php$VERSION-xmlwriter \
-        php$VERSION-tokenizer \
-        php$VERSION-ctype \
-        php$VERSION-session \
-        php$VERSION-fileinfo \
-        php$VERSION-iconv \
-        php$VERSION-json \
-        php$VERSION-posix \
-        php$VERSION-apache2 \
-        php$VERSION-fpm \
-        php$VERSION-pdo \
-        php$VERSION-pdo_dblib \
-        php$VERSION-mysqli \
-        php$VERSION-sqlite3 \
-        php$VERSION-pdo_mysql \
-        php$VERSION-pdo_sqlite \
-        php$VERSION-pdo_pgsql \
         mysql-client \
         curl \
-        libsodium \
+        icu \
+        icu-dev \
+        bash \
+        vim \
+        wget \
+        unzip \
+        make \
+        netcat-openbsd \
+        git \
+        oniguruma-dev \
+        msmtp \
+        postgresql-dev \
+        openssl \
+        openssl-dev \
         ca-certificates \
-        runit \
-        apache2 \
-        apache2-utils \
         composer \
+        freetds \
+        freetds-dev \
+        libpng \
+        libpng-dev \
+        libssh2 \
+        libssh2-dev \
+        sqlite-dev \
+        curl \
+        libpng \
+        freetype \
+        libjpeg-turbo \
+        libgcc \
+        libxml2-dev \
+        libzip-dev \
+        php-soap \
+        libstdc++ \
+        icu-libs \
+        libltdl \
+        libcurl \
+        curl-dev \
+        bzip2 \
+        bzip2-dev \
+        libmcrypt \
+        libmcrypt-dev \
 "
 
 ARG APP_ENV=prod
 
-# PHP_INI_DIR to be symmetrical with official php docker image
-ENV PHP_INI_DIR /etc/php/$VERSION
+ENV APACHE_RUN_USER=www-data
+ENV APACHE_RUN_GROUP=www-data
+ENV APACHE_CONFDIR /etc/apache2
+ENV APACHE_ENVVARS $APACHE_CONFDIR/envvars
+ENV APACHE_LOG_DIR /var/www
+ENV PHP_EXTRA_CONFIGURE_ARGS --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --disable-cgi
 
-ENV APACHE_LOG_DIR /sites/logs
+STOPSIGNAL SIGQUIT
 
 # When using Composer, disable the warning about running commands as root/super user
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# PHP.earth Alpine repository for better developer experience
-ADD https://repos.php.earth/alpine/phpearth.rsa.pub /etc/apk/keys/phpearth.rsa.pub
-
 COPY tags/apache /
-COPY php/sites /sites
+COPY php/install-php-extensions /usr/local/bin/install-php-extensions
 COPY php/etc/apache2 /etc/apache2
 COPY php/apache-start /usr/local/bin
 
 RUN set -x \
-    && addgroup apache \
-    && mkdir -p /sites/logs \
-    && mkdir -p /sites/app/public \
+    && chmod uga+x /usr/local/bin/install-php-extensions \ 
+    && mkdir -p /etc/apache2 \
+    && mkdir -p /etc/php/conf.d/ \
+    && mkdir -p /var/logs \
+    && mkdir -p /var/www/public \
     && mkdir -p /etc/apache2/sites-enabled \
     && mkdir -p /etc/apache2/conf-enabled \
     && ln -s /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf \
     && ln -s /etc/apache2/conf-available/server-cgi-bin.conf /etc/apache2/conf-enabled/server-cgi-bin.conf \
-    && adduser -S -G apache apache \
-    && echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories \
-    && apk add --no-cache \
-          $DEPS \
-    # && apk add --no-cache \
-        --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-        --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-          $DEPS \
+    && apk update \
+    && apk add --no-cache $DEPS \
+    && apk add --no-cache apache2-proxy \
+    # && sed -i "s/LoadModule mpm_prefork_module modules\/mod_mpm_prefork.so/#LoadModule mpm_prefork_module modules\/mod_mpm_prefork.so/g" /etc/apache2/httpd.conf \
+    # && sed -i "s/#LoadModule mpm_event_module modules\/mod_mpm_event.so/LoadModule mpm_event_module modules\/mod_mpm_event.so/g" /etc/apache2/httpd.conf \
+    # && sed -i "s/#LoadModule rewrite_module modules\/mod_rewrite.so/#LoadModule rewrite_module modules\/mod_rewrite.so/g" /etc/apache2/httpd.conf \
+    # && sed -i "s/#ServerName www.example.com:80/ServerName localhost/g" /etc/apache2/httpd.conf 
+    && apk add --no-cache -u musl \
     && mkdir -p /run/apache2 \
-    && chown -R apache:apache /sites/app \
-    && ln -sf /var/www/modules /etc/apache2/modules \
-    && ln -sf /dev/stdout /var/log/apache2/access.log \
-    && ln -sf /dev/stderr /var/log/apache2/error.log \
-    && rm /etc/apache2/httpd.conf.apk-new
+    && docker-php-ext-install $EXTS \
+    && docker-php-ext-enable $EXTS \
+    && chown -R "$APACHE_RUN_USER:$APACHE_RUN_GROUP" /var/www \
+    && rm -rf /var/lib/apt/lists/* 
+	
 
 RUN if [ ${APP_ENV} = "dev" ]; then \
         apk add --no-cache git openssh \
+        && composer global require ext-mysqli \
         && composer global require hirak/prestissimo \
         && composer global require paragonie/random_compat \
         && composer global require mikey179/vfsStream \
         && composer global require phpunit/phpunit; \
     fi
 
-
+COPY php/sites /var/www
 EXPOSE 80
 
 CMD ["/sbin/runit-wrapper"]
