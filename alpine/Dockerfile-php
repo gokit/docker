@@ -136,7 +136,8 @@ RUN set -x \
     && docker-php-ext-enable $EXTS \
     && chown -R "$APACHE_RUN_USER:$APACHE_RUN_GROUP" /var/www \
     && rm -rf /var/lib/apt/lists/* \
-    && apk del $RDEPS
+    && apk del $RDEPS \
+    && chmod a+x /var/www/public
 
 RUN if [ ${APP_ENV} = "dev" ]; then \
         apk add --no-cache git openssh \
